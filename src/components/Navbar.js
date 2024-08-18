@@ -2,12 +2,25 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const NavbarWrapper = styled.nav`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+  justify-items: center;
+`;
+
+const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: 1200px;
   padding: 20px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 `;
 
 const Logo = styled.div`
@@ -18,6 +31,7 @@ const Logo = styled.div`
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 
   a {
     margin: 0 15px;
@@ -77,31 +91,43 @@ const Navbar = () => {
   };
 
   return (
-    <NavbarWrapper>
-      <Logo>Ant Helper</Logo>
-      <NavLinks>
-        <Link to="/">홈</Link>
-        <Link to="/account">내 계좌</Link>
-        <Link to="/ai-trade">AI 거래</Link>
-        <SearchBar type="text" placeholder="검색" />
-        {loggedIn ? (
-          <UserMenu>
-            <UserIcon onClick={handleUserIconClick}>🔔</UserIcon>
-            <UserIcon onClick={handleUserIconClick}>👤</UserIcon>
-            <DropdownMenu show={dropdownOpen}>
-              <div>(사용자명)</div>
-              <Link to="/settings">설정</Link>
-              <Link to="/logout">로그아웃</Link>
-            </DropdownMenu>
-          </UserMenu>
-        ) : (
-          <Link to="/signin">로그인</Link>
-        )}
-      </NavLinks>
-    </NavbarWrapper>
+    <Wrapper>
+      <NavbarContainer>
+        <Logo>Ant Helper</Logo>
+        <NavLinks>
+          <Link to="/">홈</Link>
+          <Link to="/account">내 계좌</Link>
+          <Link to="/ai-trade">AI 거래</Link>
+          <SearchBar type="text" placeholder="검색" />
+        </NavLinks>
+        <UserMenu>
+          {loggedIn ? (
+            <>
+              <UserIcon onClick={handleUserIconClick}>🔔</UserIcon>
+              <UserIcon onClick={handleUserIconClick}>👤</UserIcon>
+              <DropdownMenu show={dropdownOpen}>
+                <div>(사용자명)</div>
+                <Link to="/settings">설정</Link>
+                <Link to="/logout">로그아웃</Link>
+              </DropdownMenu>
+            </>
+          ) : (
+            <CustomLink to="/signin">로그인</CustomLink>
+          )}
+        </UserMenu>
+      </NavbarContainer>
+    </Wrapper>
   );
 };
 
 export default Navbar;
 
-//  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//Link 컴포넌트를 상속
+const CustomLink = styled(Link)`
+  color: grey;
+  text-decoration: none;
+  &:visited {
+    color: grey;
+    text-decoration: none;
+  }
+`;
