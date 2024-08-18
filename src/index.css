@@ -1,0 +1,12 @@
+body {
+  background-color: white;
+  font-family: "Goorm Sans", sans-serif;
+}
+
+/* @font-face {
+  font-family: "Goorm Sans";
+  src: url("https://statics.goorm.io/fonts/GoormSans/v1.0.0/GoormSans.min.css")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+} */
