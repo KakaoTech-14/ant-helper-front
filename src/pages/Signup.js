@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { Form, Input, Inputs, Title, Wrapper } from "../components/Common";
-import { styled } from "styled-components";
+import {
+  Form,
+  Input,
+  Inputs,
+  Title,
+  Wrapper,
+  Button,
+} from "../components/Common";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -51,10 +57,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-const Button = styled.button`
-  background-color: black;
-  color: white;
-  padding: 20px;
-  border-radius: 5px;
-`;

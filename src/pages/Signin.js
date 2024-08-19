@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Form, Input, Inputs, Title, Wrapper } from "../components/Common";
+import {
+  Form,
+  Input,
+  Inputs,
+  Title,
+  Wrapper,
+  Button,
+} from "../components/Common";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -43,17 +50,10 @@ const Signin = () => {
 
 export default Signin;
 
-const Button = styled.button`
-  background-color: black;
-  color: white;
-  padding: 20px;
-  border-radius: 5px;
-`;
 //Link 컴포넌트를 상속
 const CustomLink = styled(Link)`
-  margin-top: 20px;
+  margin: 10px;
   color: black;
-  text-decoration: none;
   &:visited {
     color: grey;
     text-decoration: none;
