@@ -10,34 +10,45 @@ export const Wrapper = styled.div`
   justify-items: center;
   overflow-x: hidden;
 `;
-export const Inputs = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-right: 10px;
+
+export const Form = styled.div`
+  display: block;
+  height: 100%;
 `;
+
+export const Inputs = styled.div`
+  display: block;
+  margin: 40px;
+`;
+
 export const Input = styled.input`
+  display: block;
   font-size: 20px;
-  height: 30px;
+  height: 20px;
+  border: 2px solid grey;
   border-radius: 5px;
-  border: none;
   padding: 10px;
+  margin-top: 10px;
   &::placeholder {
     color: darkgrey;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 300;
     font-family: "Goorm Sans";
   }
 `;
 
-export const Form = styled.div`
-  display: flex;
-  height: 100%;
-`;
-
 export const Title = styled.div`
   font-size: 30px;
-  font-weight: 700;
-  margin-bottom: 30px;
+  font-weight: 500;
+  margin: 50px;
+`;
+
+export const Button = styled.button`
+  width: 100%;
+  margin: 10px 0px;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
 `;
