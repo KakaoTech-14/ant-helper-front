@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Form,
   Input,
@@ -13,14 +14,12 @@ import { Link } from "react-router-dom";
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   };
   const onChangePassword = (e) => {
     setPassword(e.target.value);
-  };
-  const onClick = () => {
-    //로그인 api처리
   };
 
   return (

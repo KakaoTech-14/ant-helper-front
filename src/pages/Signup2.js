@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   Form,
@@ -11,7 +11,7 @@ import {
 
 const Signup = () => {
   const [email, setEmail] = useState("");
-  const [code, setAuthCode] = useState("");
+  const [authCode, setAuthCode] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,64 +21,56 @@ const Signup = () => {
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   };
-
+  const onChangeAuthCode = (e) => {
+    setAuthCode(e.target.value);
+  };
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
   const onChangePasswordCheck = (e) => {
     setPasswordCheck(e.target.value);
   };
-  const onChangeAuthCode = (e) => {
-    const value = e.target.value;
-    setAuthCode(value !== "" ? parseInt(value, 10) : ""); // 정수로 변환
-  };
-  // 이메일 인증 요청
-  const onClickSendCode = async () => {
+
+  // 이메일 중복 확인 및 인증 코드 발송
+  const onSendAuthCode = async () => {
     try {
-      const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/email/verification-request",
-        {
-          email: email,
-        }
+      const response = await axios.get(
+        `/api/members/login-id/${email}/duplicate`
       );
-      if (response.data.isSuccess) {
-        // 인증 코드 발송 성공
+
+      if (response.data.data === false) {
+        // 이메일 중복 아님, 인증 코드 발송 로직 추가
+        await axios.post("/api/send-auth-code", { email }); // 가정된 API
         setAuthSent(true);
         setErrorMessage("인증번호가 발송되었습니다.");
       } else {
-        setErrorMessage("이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.");
+        setErrorMessage("이미 존재하는 이메일입니다.");
       }
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setErrorMessage("이미 가입된 이메일입니다.");
-      } else {
-        setErrorMessage("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
-      }
+      setErrorMessage("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
   // 인증번호 확인
-  const onClickVerifyCode = async () => {
+  const onVerifyAuthCode = async () => {
     try {
-      const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/email/verification",
-        { email, code }
-      );
+      const response = await axios.post("/api/verify-auth-code", {
+        email,
+        authCode,
+      });
 
-      if (response.data.isSuccess) {
+      if (response.data.isSuccess && response.data.code !== 401) {
         setAuthVerified(true);
         setErrorMessage("인증이 완료되었습니다.");
       } else {
-        setErrorMessage("인증번호가 일치하지 않습니다.");
+        setErrorMessage(
+          response.data.message || "인증번호가 일치하지 않습니다."
+        );
       }
     } catch (error) {
       setErrorMessage("인증번호 확인에 실패했습니다. 다시 시도해 주세요.");
     }
   };
-
-  useEffect(() => {
-    console.log("authSent가 변경되었습니다:", authSent);
-  }, [authSent]);
 
   // 회원가입 처리
   const onClickSignup = async () => {
@@ -87,38 +79,33 @@ const Signup = () => {
       return;
     }
 
-    // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 최소 8자, 문자와 숫자 포함
-    // if (!passwordRegex.test(password)) {
-    //   setErrorMessage(
-    //     "비밀번호는 최소 8자이며, 문자와 숫자를 포함해야 합니다."
-    //   );
-    //   return;
-    // }
+    // 비밀번호 규칙 확인
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 최소 8자, 문자와 숫자 포함
+    if (!passwordRegex.test(password)) {
+      setErrorMessage(
+        "비밀번호는 최소 8자이며, 문자와 숫자를 포함해야 합니다."
+      );
+      return;
+    }
 
     try {
-      const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/signup",
-        {
-          email: email,
-          pw: password,
-          appKey: "yourAppKey",
-          secretKey: "yourSecretKey",
-        }
-      );
+      const response = await axios.post("/api/members/signup", {
+        loginId: email,
+        pw: password,
+        email: email,
+        appKey: "yourAppKey",
+        secretKey: "yourSecretKey",
+      });
 
       if (response.data.isSuccess) {
         alert("회원가입을 완료했습니다.");
-        window.location.href = "/";
-      } else {
-        setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
+        // 홈으로 리디렉션 추가 (예: window.location.href = "/home")
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrorMessage("이미 존재하는 회원입니다.");
       } else {
-        setErrorMessage(
-          "에러로 인해 회원가입에 실패했습니다. 다시 시도해 주세요."
-        );
+        setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
       }
     }
   };
@@ -139,15 +126,15 @@ const Signup = () => {
             <Input
               placeholder="인증번호 입력"
               type="text"
-              value={code}
+              value={authCode}
               onChange={onChangeAuthCode}
               disabled={authVerified}
             />
           )}
           {!authSent ? (
-            <Button onClick={onClickSendCode}>인증번호 전송</Button>
+            <Button onClick={onSendAuthCode}>인증번호 전송</Button>
           ) : !authVerified ? (
-            <Button onClick={onClickVerifyCode}>인증번호 확인</Button>
+            <Button onClick={onVerifyAuthCode}>인증번호 확인</Button>
           ) : (
             <Button disabled>완료</Button>
           )}
