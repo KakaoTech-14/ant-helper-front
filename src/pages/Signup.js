@@ -7,6 +7,7 @@ import {
   Title,
   Wrapper,
   Button,
+  StyledButton,
 } from "../components/Common";
 
 const Signup = () => {
@@ -17,6 +18,9 @@ const Signup = () => {
   const [authSent, setAuthSent] = useState(false);
   const [authVerified, setAuthVerified] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const isEmailValid = email !== "";
+  const isCodeValid = code !== "";
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -143,9 +147,13 @@ const Signup = () => {
             />
           )}
           {!authSent ? (
-            <Button onClick={onClickSendCode}>인증번호 전송</Button>
+            <StyledButton onClick={onClickSendCode} disabled={!isEmailValid}>
+              인증번호 전송
+            </StyledButton>
           ) : !authVerified ? (
-            <Button onClick={onClickVerifyCode}>인증번호 확인</Button>
+            <StyledButton onClick={onClickVerifyCode} disabled={!isCodeValid}>
+              인증번호 확인
+            </StyledButton>
           ) : (
             <Button disabled>완료</Button>
           )}
@@ -163,12 +171,12 @@ const Signup = () => {
             value={pwCheck}
             onChange={onChangePWCheck}
           />
-          <Button onClick={onClickSignup} disabled={!authVerified}>
+          <StyledButton onClick={onClickSignup} disabled={!authVerified}>
             확인
-          </Button>
-          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+          </StyledButton>
         </Inputs>
       </Form>
+      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
     </Wrapper>
   );
 };
