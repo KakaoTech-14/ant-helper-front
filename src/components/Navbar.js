@@ -59,7 +59,7 @@ const UserIcon = styled.div`
   font-size: 20px;
 `;
 
-const DropdownMenu = styled.div`
+const UserDropdownMenu = styled.div`
   position: absolute;
   top: 40px;
   right: 0;
@@ -83,11 +83,19 @@ const DropdownMenu = styled.div`
 `;
 
 const Navbar = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  const [userDropdown, setUserDropdown] = useState(false);
+  const [noticeDropdown, setNoticeDropdown] = useState(false);
 
-  const handleUserIconClick = () => {
-    setDropdownOpen(!dropdownOpen);
+  const onHandleSignedIn = () => {
+    //TODO
+    //setSignedIn();
+  };
+  const onClickUserDropdown = () => {
+    setUserDropdown(!userDropdown);
+  };
+  const onClickNoticeDropdown = () => {
+    setNoticeDropdown(!noticeDropdown);
   };
 
   return (
@@ -101,15 +109,16 @@ const Navbar = () => {
           <SearchBar type="text" placeholder="검색" />
         </NavLinks>
         <UserMenu>
-          {loggedIn ? (
+          {signedIn ? (
             <>
-              <UserIcon onClick={handleUserIconClick}>🔔</UserIcon>
-              <UserIcon onClick={handleUserIconClick}>👤</UserIcon>
-              <DropdownMenu show={dropdownOpen}>
+              <UserIcon onClick={onClickNoticeDropdown}>🔔</UserIcon>
+              <UserIcon onClick={onClickUserDropdown}>👤</UserIcon>
+              <UserDropdownMenu show={userDropdown}>
                 <div>(사용자명)</div>
                 <Link to="/settings">설정</Link>
-                <Link to="/logout">로그아웃</Link>
-              </DropdownMenu>
+                //TODO
+                <Link to="/signout">로그아웃</Link>
+              </UserDropdownMenu>
             </>
           ) : (
             <CustomLink to="/signin">로그인</CustomLink>
