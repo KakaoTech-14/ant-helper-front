@@ -12,27 +12,28 @@ import {
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [code, setAuthCode] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [pw, setPW] = useState("");
+  const [pwCheck, setPWCheck] = useState("");
   const [authSent, setAuthSent] = useState(false);
   const [authVerified, setAuthVerified] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   };
 
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
+  const onChangePW = (e) => {
+    setPW(e.target.value);
   };
-  const onChangePasswordCheck = (e) => {
-    setPasswordCheck(e.target.value);
+  const onChangePWCheck = (e) => {
+    setPWCheck(e.target.value);
   };
   const onChangeAuthCode = (e) => {
     const value = e.target.value;
     setAuthCode(value !== "" ? parseInt(value, 10) : ""); // 정수로 변환
   };
-  // 이메일 인증 요청
+
+  // 이메일 인증 요청(verification-request) API 처리
   const onClickSendCode = async () => {
     try {
       const response = await axios.post(
@@ -57,7 +58,7 @@ const Signup = () => {
     }
   };
 
-  // 인증번호 확인
+  // 인증번호 확인(verification) API 처리
   const onClickVerifyCode = async () => {
     try {
       const response = await axios.post(
@@ -76,31 +77,28 @@ const Signup = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("authSent가 변경되었습니다:", authSent);
-  }, [authSent]);
-
-  // 회원가입 처리
+  // 회원가입(signup) API
   const onClickSignup = async () => {
-    if (password !== passwordCheck) {
+    if (pw !== pwCheck) {
       setErrorMessage("비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 최소 8자, 문자와 숫자 포함
-    // if (!passwordRegex.test(password)) {
-    //   setErrorMessage(
-    //     "비밀번호는 최소 8자이며, 문자와 숫자를 포함해야 합니다."
-    //   );
-    //   return;
-    // }
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
+
+    if (!passwordRegex.test(pw)) {
+      setErrorMessage(
+        "비밀번호는 최소 8자이며, 문자와 숫자를 모두 포함해야 합니다."
+      );
+      return;
+    }
 
     try {
       const response = await axios.post(
         "http://15.165.105.24:8080/api/members/signup",
         {
           email: email,
-          pw: password,
+          pw: pw,
           appKey: "yourAppKey",
           secretKey: "yourSecretKey",
         }
@@ -156,20 +154,20 @@ const Signup = () => {
           <Input
             placeholder="비밀번호"
             type="password"
-            value={password}
-            onChange={onChangePassword}
+            value={pw}
+            onChange={onChangePW}
           />
           <Input
             placeholder="비밀번호 확인"
             type="password"
-            value={passwordCheck}
-            onChange={onChangePasswordCheck}
+            value={pwCheck}
+            onChange={onChangePWCheck}
           />
           <Button onClick={onClickSignup} disabled={!authVerified}>
             확인
           </Button>
+          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
         </Inputs>
-        {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       </Form>
     </Wrapper>
   );
