@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -86,15 +86,25 @@ const Navbar = () => {
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
 
-  const onHandleSignedIn = () => {
-    //TODO
-    //setSignedIn();
-  };
+  // 로그인 상태 확인
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    setSignedIn(!!token); // 토큰이 있으면 signedIn을 true로 설정
+  }, []);
+
   const onClickUserDropdown = () => {
     setUserDropdown(!userDropdown);
   };
+
   const onClickNoticeDropdown = () => {
     setNoticeDropdown(!noticeDropdown);
+  };
+
+  const handleSignOut = () => {
+    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setSignedIn(false);
+    window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
   };
 
   return (
@@ -115,8 +125,7 @@ const Navbar = () => {
               <UserDropdownMenu show={userDropdown}>
                 <div>(사용자명)</div>
                 <Link to="/settings">설정</Link>
-                //TODO
-                <Link to="/signout">로그아웃</Link>
+                <Link onClick={handleSignOut}>로그아웃</Link>
               </UserDropdownMenu>
             </>
           ) : (

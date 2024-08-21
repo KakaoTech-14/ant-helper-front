@@ -52,3 +52,10 @@ export const Button = styled.button`
   padding: 10px;
   border-radius: 5px;
 `;
+export const StyledButton = styled(Button)`
+  background-color: ${(props) => (props.disabled ? "#d3d3d3" : "black")};
+  cursor: ${(props) => (props.disabled ? "disabled" : "pointer")};
+  &:hover {
+    background-color: ${(props) => (props.disabled ? "#d3d3d3" : "black")};
+  }
+`;
