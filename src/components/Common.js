@@ -6,10 +6,10 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  align-items: center;
-  justify-items: center;
   overflow-x: hidden;
 `;
+//align-items: center;
+//justify-items: center;
 
 export const Form = styled.div`
   display: block;
