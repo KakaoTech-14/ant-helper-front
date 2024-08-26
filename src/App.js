@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
+import Settings from "./pages/Settings";
 
 import "./App.css";
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/settings/*" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );

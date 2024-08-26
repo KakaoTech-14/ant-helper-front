@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { ReactComponent as NotificationIcon } from "../assets/icons/notifications_24dp.svg";
-import { ReactComponent as AccountIcon } from "../assets/icons/account_circle_30dp.svg";
+import { ReactComponent as NotificationIcon } from "../assets/icons/notifications.svg";
+import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ const UserIcon = styled.div`
 
 const UserDropdownMenu = styled.div`
   position: absolute;
-  top: 60px; /* Adjust according to the height of the Navbar */
+  top: 70px; /* Adjust according to the height of the Navbar */
   right: 0;
   background: white;
   border: 1px solid #ddd;
