@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { ReactComponent as NotificationIcon } from "../assets/icons/notifications_24dp.svg";
+import { ReactComponent as AccountIcon } from "../assets/icons/account_circle_30dp.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,6 +22,7 @@ const NavbarContainer = styled.nav`
   margin: 0 auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
+  position: relative; /* Important to keep the dropdown relative to Navbar */
 `;
 
 const Logo = styled.div`
@@ -47,7 +50,6 @@ const SearchBar = styled.input`
 `;
 
 const UserMenu = styled.div`
-  position: relative;
   display: flex;
   align-items: center;
 `;
@@ -55,12 +57,12 @@ const UserMenu = styled.div`
 const UserIcon = styled.div`
   margin-left: 20px;
   cursor: pointer;
-  font-size: 20px;
+  position: relative;
 `;
 
 const UserDropdownMenu = styled.div`
   position: absolute;
-  top: 40px;
+  top: 60px; /* Adjust according to the height of the Navbar */
   right: 0;
   background: white;
   border: 1px solid #ddd;
@@ -68,6 +70,7 @@ const UserDropdownMenu = styled.div`
   width: 150px;
   display: ${(props) => (props.show ? "block" : "none")};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure the dropdown appears above other content */
 
   a {
     display: block;
@@ -120,26 +123,29 @@ const Navbar = () => {
         <UserMenu>
           {signedIn ? (
             <>
-              <UserIcon onClick={onClickNoticeDropdown}>🔔</UserIcon>
-              <UserIcon onClick={onClickUserDropdown}>👤</UserIcon>
-              <UserDropdownMenu show={userDropdown}>
-                <div>(사용자명)</div>
-                <Link to="/settings">설정</Link>
-                <Link onClick={handleSignOut}>로그아웃</Link>
-              </UserDropdownMenu>
+              <UserIcon onClick={onClickNoticeDropdown}>
+                <NotificationIcon />
+              </UserIcon>
+              <UserIcon onClick={onClickUserDropdown}>
+                <AccountIcon />
+              </UserIcon>
             </>
           ) : (
             <CustomLink to="/signin">로그인</CustomLink>
           )}
         </UserMenu>
       </NavbarContainer>
+      <UserDropdownMenu show={userDropdown}>
+        <div>(사용자)</div>
+        <Link to="/settings">설정</Link>
+        <Link onClick={handleSignOut}>로그아웃</Link>
+      </UserDropdownMenu>
     </Wrapper>
   );
 };
 
 export default Navbar;
 
-//Link 컴포넌트를 상속
 const CustomLink = styled(Link)`
   color: grey;
   text-decoration: none;
