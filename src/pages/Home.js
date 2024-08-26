@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import Navbar from "../components/Navbar";
 import { Wrapper } from "../components/Common";
-import AIRecommendation from "../components/AIRecommendation";
-import Watchlist from "../components/Watchlist";
+import AIList from "../components/AIList";
+import WatchList from "../components/WatchList";
 import styled from "styled-components";
 
 const TabsContainer = styled.div`
@@ -28,7 +28,7 @@ const Home = () => {
       <Navbar />
       <TabsContainer>
         <Tab
-          active={activeTab === "recomendations"}
+          active={activeTab === "recommendations"}
           onClick={() => setActiveTab("recommendations")}
         >
           AI 추천종목
@@ -40,8 +40,8 @@ const Home = () => {
           관심종목
         </Tab>
       </TabsContainer>
-      {activeTab === "recommendations" && <AIRecommendation />}
-      {activeTab === "watchlist" && <Watchlist />}
+      {activeTab === "recommendations" && <AIList />}
+      {activeTab === "watchlist" && <WatchList />}
     </Wrapper>
   );
 };

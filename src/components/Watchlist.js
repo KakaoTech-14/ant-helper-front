@@ -1,30 +1,12 @@
 import React from "react";
-import styled from "styled-components";
+import {
+  StockTableContainer,
+  Table,
+  TableHeader,
+  TableData,
+} from "./StockTable";
 
-const WatchlistContainer = styled.div`
-  width: 80%;
-  box-sizing: border-box;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-const TableHeader = styled.th`
-  text-align: left;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-`;
-
-const TableData = styled.td`
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  color: ${(props) =>
-    props.positive ? "red" : props.negative ? "blue" : "black"};
-`;
-
-const Watchlist = () => {
+const WatchList = () => {
   //현재 가짜데이터임
   const mockData = [
     {
@@ -58,8 +40,7 @@ const Watchlist = () => {
   ];
 
   return (
-    <WatchlistContainer>
-      <h2>관심종목</h2>
+    <StockTableContainer>
       <Table>
         <thead>
           <tr>
@@ -86,8 +67,8 @@ const Watchlist = () => {
           ))}
         </tbody>
       </Table>
-    </WatchlistContainer>
+    </StockTableContainer>
   );
 };
 
-export default Watchlist;
+export default WatchList;

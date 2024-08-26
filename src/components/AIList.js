@@ -1,31 +1,12 @@
 import React from "react";
-import styled from "styled-components";
+import {
+  StockTableContainer,
+  Table,
+  TableHeader,
+  TableData,
+} from "./StockTable";
 
-const RecommendationContainer = styled.div`
-  width: 80%;
-  padding-left: 20px;
-  box-sizing: border-box;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-const TableHeader = styled.th`
-  text-align: left;
-  padding: 10px;
-  border-bottom: 2px solid #ddd;
-`;
-
-const TableData = styled.td`
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  color: ${(props) =>
-    props.positive ? "red" : props.negative ? "blue" : "black"};
-`;
-
-const AIRecommendation = () => {
+const AIList = () => {
   //가짜데이터
   const mockData = [
     {
@@ -67,7 +48,7 @@ const AIRecommendation = () => {
   ];
 
   return (
-    <RecommendationContainer>
+    <StockTableContainer>
       <Table>
         <thead>
           <tr>
@@ -94,8 +75,8 @@ const AIRecommendation = () => {
           ))}
         </tbody>
       </Table>
-    </RecommendationContainer>
+    </StockTableContainer>
   );
 };
 
-export default AIRecommendation;
+export default AIList;

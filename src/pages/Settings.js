@@ -28,7 +28,7 @@ const Content = styled.div`
 
 const StyledNavLink = styled(NavLink)`
   display: block;
-  margin: 25px;
+  margin-top: 20px;
   text-decoration: none;
   color: black;
   font-size: 20px;
