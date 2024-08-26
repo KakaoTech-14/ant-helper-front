@@ -6,7 +6,7 @@ import {
   TableData,
 } from "./StockTable";
 
-const AIList = () => {
+const AITable = () => {
   //가짜데이터
   const mockData = [
     {
@@ -79,4 +79,4 @@ const AIList = () => {
   );
 };
 
-export default AIList;
+export default AITable;

@@ -6,7 +6,7 @@ import {
   TableData,
 } from "./StockTable";
 
-const WatchList = () => {
+const WatchTable = () => {
   //현재 가짜데이터임
   const mockData = [
     {
@@ -71,4 +71,4 @@ const WatchList = () => {
   );
 };
 
-export default WatchList;
+export default WatchTable;

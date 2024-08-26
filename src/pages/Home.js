@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import Navbar from "../components/Navbar";
 import { Wrapper } from "../components/Common";
-import AIList from "../components/AIList";
-import WatchList from "../components/WatchList";
+import AITable from "../components/AITable";
+import WatchTable from "../components/WatchTable";
 import styled from "styled-components";
 
 const TabsContainer = styled.div`
@@ -21,27 +21,24 @@ const Tab = styled.div`
 `;
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState("recommendations");
+  const [activeTab, setActiveTab] = useState("ai");
 
   return (
     <Wrapper>
       <Navbar />
       <TabsContainer>
-        <Tab
-          active={activeTab === "recommendations"}
-          onClick={() => setActiveTab("recommendations")}
-        >
+        <Tab active={activeTab === "ai"} onClick={() => setActiveTab("ai")}>
           AI 추천종목
         </Tab>
         <Tab
-          active={activeTab === "watchlist"}
-          onClick={() => setActiveTab("watchlist")}
+          active={activeTab === "watch"}
+          onClick={() => setActiveTab("watch")}
         >
           관심종목
         </Tab>
       </TabsContainer>
-      {activeTab === "recommendations" && <AIList />}
-      {activeTab === "watchlist" && <WatchList />}
+      {activeTab === "ai" && <AITable />}
+      {activeTab === "watch" && <WatchTable />}
     </Wrapper>
   );
 };
