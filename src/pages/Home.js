@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Auth";
 import Navbar from "../components/Navbar";
 import { Wrapper } from "../components/Common";
 import AITable from "../components/AITable";
@@ -21,7 +22,9 @@ const Tab = styled.div`
 `;
 
 const Home = () => {
+  const { signedIn } = useAuth();
   const [activeTab, setActiveTab] = useState("ai");
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -32,7 +35,12 @@ const Home = () => {
         </Tab>
         <Tab
           active={activeTab === "watch"}
-          onClick={() => setActiveTab("watch")}
+          onClick={() => {
+            if (!signedIn) {
+              navigate("/signin");
+            }
+            setActiveTab("watch");
+          }}
         >
           관심종목
         </Tab>
