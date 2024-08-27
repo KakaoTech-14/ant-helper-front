@@ -5,11 +5,11 @@ import { styled } from "styled-components";
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-items: center;
   max-width: 100%;
   overflow-x: hidden;
 `;
-//align-items: center;
-//justify-items: center;
 
 export const Form = styled.div`
   display: block;
