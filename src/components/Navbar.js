@@ -1,8 +1,63 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Auth";
 import { ReactComponent as NotificationIcon } from "../assets/icons/notifications.svg";
 import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
+
+const Navbar = () => {
+  const { signedIn, logout } = useAuth();
+  const [userDropdown, setUserDropdown] = useState(false);
+  const [noticeDropdown, setNoticeDropdown] = useState(false);
+
+  const onClickUserDropdown = () => {
+    setUserDropdown(!userDropdown);
+  };
+
+  const onClickNoticeDropdown = () => {
+    setNoticeDropdown(!noticeDropdown);
+  };
+
+  const handleSignOut = () => {
+    logout();
+    window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
+  };
+
+  return (
+    <Wrapper>
+      <NavbarContainer>
+        <Logo>Ant Helper</Logo>
+        <NavLinks>
+          <Link to="/">홈</Link>
+          <Link to="/account">내 계좌</Link>
+          <Link to="/ai-trade">AI 거래</Link>
+          <SearchBar type="text" placeholder="검색" />
+        </NavLinks>
+        <UserMenu>
+          {signedIn ? (
+            <>
+              <UserIcon onClick={onClickNoticeDropdown}>
+                <NotificationIcon />
+              </UserIcon>
+              <UserIcon onClick={onClickUserDropdown}>
+                <AccountIcon />
+              </UserIcon>
+            </>
+          ) : (
+            <CustomLink to="/signin">로그인</CustomLink>
+          )}
+        </UserMenu>
+      </NavbarContainer>
+      <UserDropdownMenu show={userDropdown}>
+        <div>(사용자)</div>
+        <Link to="/settings">설정</Link>
+        <Link onClick={handleSignOut}>로그아웃</Link>
+      </UserDropdownMenu>
+    </Wrapper>
+  );
+};
+
+export default Navbar;
 
 const Wrapper = styled.div`
   display: flex;
@@ -83,68 +138,6 @@ const UserDropdownMenu = styled.div`
     }
   }
 `;
-
-const Navbar = () => {
-  const [signedIn, setSignedIn] = useState(false);
-  const [userDropdown, setUserDropdown] = useState(false);
-  const [noticeDropdown, setNoticeDropdown] = useState(false);
-
-  // 로그인 상태 확인
-  useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    setSignedIn(!!token); // 토큰이 있으면 signedIn을 true로 설정
-  }, []);
-
-  const onClickUserDropdown = () => {
-    setUserDropdown(!userDropdown);
-  };
-
-  const onClickNoticeDropdown = () => {
-    setNoticeDropdown(!noticeDropdown);
-  };
-
-  const handleSignOut = () => {
-    sessionStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setSignedIn(false);
-    window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
-  };
-
-  return (
-    <Wrapper>
-      <NavbarContainer>
-        <Logo>Ant Helper</Logo>
-        <NavLinks>
-          <Link to="/">홈</Link>
-          <Link to="/account">내 계좌</Link>
-          <Link to="/ai-trade">AI 거래</Link>
-          <SearchBar type="text" placeholder="검색" />
-        </NavLinks>
-        <UserMenu>
-          {signedIn ? (
-            <>
-              <UserIcon onClick={onClickNoticeDropdown}>
-                <NotificationIcon />
-              </UserIcon>
-              <UserIcon onClick={onClickUserDropdown}>
-                <AccountIcon />
-              </UserIcon>
-            </>
-          ) : (
-            <CustomLink to="/signin">로그인</CustomLink>
-          )}
-        </UserMenu>
-      </NavbarContainer>
-      <UserDropdownMenu show={userDropdown}>
-        <div>(사용자)</div>
-        <Link to="/settings">설정</Link>
-        <Link onClick={handleSignOut}>로그아웃</Link>
-      </UserDropdownMenu>
-    </Wrapper>
-  );
-};
-
-export default Navbar;
 
 const CustomLink = styled(Link)`
   color: grey;
