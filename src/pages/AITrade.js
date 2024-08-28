@@ -9,7 +9,7 @@ const AITrade = () => {
 
   useEffect(() => {
     axios
-      .get("http://15.165.105.24:8080/api/stocks/recommendations")
+      .get("https://api.ant-helper.com/api/stocks/recommendations")
       .then((response) => setRecommendations(response.data))
       .catch((error) =>
         console.error('Error at "/api/stocks/recommendations"', error)

@@ -41,7 +41,7 @@ const Signup = () => {
   const onClickSendCode = async () => {
     try {
       const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/email/verification-request",
+        "https://15.165.105.24:8080/api/members/email/verification-request",
         {
           email: email,
         }
@@ -66,7 +66,7 @@ const Signup = () => {
   const onClickVerifyCode = async () => {
     try {
       const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/email/verification",
+        "https://15.165.105.24:8080/api/members/email/verification",
         { email, code }
       );
 
@@ -99,7 +99,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/signup",
+        "https://15.165.105.24:8080/api/members/signup",
         {
           email: email,
           pw: pw,

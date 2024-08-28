@@ -17,8 +17,8 @@ const Tab = styled.div`
   margin-right: 20px;
   cursor: pointer;
 
-  font-weight: ${(props) => (props.active ? "bold" : "normal")};
-  border-bottom: ${(props) => (props.active ? "2px solid black" : "none")};
+  font-weight: ${(props) => (props.$active ? "bold" : "normal")};
+  border-bottom: ${(props) => (props.$active ? "2px solid black" : "none")};
 `;
 
 const Home = () => {
@@ -30,11 +30,11 @@ const Home = () => {
     <Wrapper>
       <Navbar />
       <TabsContainer>
-        <Tab active={activeTab === "ai"} onClick={() => setActiveTab("ai")}>
+        <Tab $active={activeTab === "ai"} onClick={() => setActiveTab("ai")}>
           AI 추천종목
         </Tab>
         <Tab
-          active={activeTab === "watch"}
+          $active={activeTab === "watch"}
           onClick={() => {
             if (!signedIn) {
               navigate("/signin");

@@ -21,5 +21,5 @@ export const TableData = styled.td`
   padding: 10px;
   border-bottom: 1px solid #ddd;
   color: ${(props) =>
-    props.positive ? "red" : props.negative ? "blue" : "black"};
+    props.change > 0 ? "red" : props.change < 0 ? "blue" : "black"};
 `;

@@ -12,6 +12,8 @@ import {
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
@@ -36,7 +38,8 @@ const Signin = () => {
       formData.append("pw", pw);
 
       const response = await axios.post(
-        "http://15.165.105.24:8080/api/members/login",
+        //`${apiUrl}/api/members/login`,
+        "https://api.ant-helper.com/api/members/login",
         formData,
         {
           headers: {

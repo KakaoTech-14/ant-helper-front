@@ -7,43 +7,43 @@ import {
 } from "./StockTable";
 
 const AITable = () => {
-  //가짜데이터
+  // 가짜 데이터
   const mockData = [
     {
       rank: 1,
       name: "테슬라",
-      price: "4,465원",
-      change: "+825원 (22.6%)",
-      volume: "31억원",
-      amount: "719,264주",
-      positive: true,
+      price: 4465, // 가격
+      change: 825, // 변동 금액
+      changePercentage: 22.6, // 변동 퍼센트
+      volume: 3100000000, // 거래대금
+      amount: 719264, // 거래량(주)
     },
     {
       rank: 2,
       name: "신풍제약",
-      price: "18,210원",
-      change: "+2,380원 (15.0%)",
-      volume: "23억원",
-      amount: "125,259주",
-      positive: true,
+      price: 18210,
+      change: 2380,
+      changePercentage: 15.0,
+      volume: 2300000000,
+      amount: 125259,
     },
     {
       rank: 3,
       name: "씨젠",
-      price: "73,700원",
-      change: "-4,600원 (5.8%)",
-      volume: "7.4억원",
-      amount: "9,942주",
-      negative: true,
+      price: 73700,
+      change: -4600,
+      changePercentage: -5.8,
+      volume: 740000000,
+      amount: 9942,
     },
     {
       rank: 4,
       name: "셀트리온",
-      price: "12,550원",
-      change: "+2,300원 (22.4%)",
-      volume: "6.7억원",
-      amount: "53,086주",
-      positive: true,
+      price: 12550,
+      change: 2300,
+      changePercentage: 22.4,
+      volume: 670000000,
+      amount: 53086,
     },
   ];
 
@@ -65,12 +65,13 @@ const AITable = () => {
             <tr key={index}>
               <TableData>{item.rank}</TableData>
               <TableData>{item.name}</TableData>
-              <TableData>{item.price}</TableData>
-              <TableData positive={item.positive} negative={item.negative}>
-                {item.change}
+              <TableData>{item.price.toLocaleString()}원</TableData>
+              <TableData change={item.change}>
+                {item.change > 0 ? "+" : ""}
+                {item.change.toLocaleString()}원 ({item.changePercentage}%)
               </TableData>
-              <TableData>{item.volume}</TableData>
-              <TableData>{item.amount}</TableData>
+              <TableData>{(item.volume / 100000000).toFixed(1)}억원</TableData>
+              <TableData>{item.amount.toLocaleString()}주</TableData>
             </tr>
           ))}
         </tbody>
