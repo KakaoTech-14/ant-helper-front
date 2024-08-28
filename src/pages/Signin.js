@@ -12,8 +12,6 @@ import {
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
@@ -38,8 +36,8 @@ const Signin = () => {
       formData.append("pw", pw);
 
       const response = await axios.post(
-        //`${apiUrl}/api/members/login`,
-        "https://api.ant-helper.com/api/members/login",
+        `${process.env.REACT_APP_API_URL}/api/members/login`,
+
         formData,
         {
           headers: {
@@ -62,7 +60,6 @@ const Signin = () => {
         setErrorMessage("로그인에 실패했습니다.");
       }
     } catch (error) {
-      //console.error("로그인 요청 중 에러 발생:", error);
       setErrorMessage("에러가 발생했습니다. 다시 시도해 주세요.");
     }
   };
