@@ -6,7 +6,6 @@ import {
   Inputs,
   Title,
   Wrapper,
-  Button,
   StyledButton,
 } from "../components/Common";
 import { styled } from "styled-components";
@@ -17,7 +16,7 @@ const Signin = () => {
   const [pw, setPW] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const isFormValid = email !== "" && pw !== "";
+  const isFormValid = email !== "" && pwf !== "";
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -46,7 +45,7 @@ const Signin = () => {
         }
       );
 
-      const { accessToken, refreshToken } = response.data.data;
+      const { accessToken, refreshToken, userEmail } = response.data.data;
 
       if (accessToken) {
         alert("로그인에 성공했습니다.");
@@ -54,7 +53,11 @@ const Signin = () => {
         // accessToken은 메모리에 저장함. 브라우저가 닫힐 때 자동삭제.
         // refreshToken은 localStorage에 저장함.
         sessionStorage.setItem("accessToken", accessToken);
+        sessionStorage.setItem("email", userEmail);
         localStorage.setItem("refreshToken", refreshToken);
+
+        //login(token, email); //AuthContext에서 login함수 불러와서 쓰기..?
+        //Navigate('/');
         window.location.href = "/";
       } else {
         setErrorMessage("로그인에 실패했습니다.");

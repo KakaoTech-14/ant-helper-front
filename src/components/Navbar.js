@@ -6,7 +6,7 @@ import { ReactComponent as NotificationIcon } from "../assets/icons/notification
 import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
 
 const Navbar = () => {
-  const { signedIn, logout } = useAuth();
+  const { signedIn, userInfo, logout } = useAuth();
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
 
@@ -51,7 +51,7 @@ const Navbar = () => {
       {userDropdown && (
         <UserDropdownMenu>
           {" "}
-          <div>(사용자)</div>
+          <div>{userInfo?.email}</div>
           <Link to="/settings">설정</Link>
           <Link onClick={handleSignOut}>로그아웃</Link>
         </UserDropdownMenu>
