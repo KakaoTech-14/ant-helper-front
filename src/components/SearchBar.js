@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-// SearchBar 컴포넌트에 스타일을 적용
 const StyledSearchBar = styled.input`
   padding: 8px;
   border-radius: 20px;
