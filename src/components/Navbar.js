@@ -23,6 +23,8 @@ const Navbar = () => {
     window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
   };
 
+  const userName = userInfo?.email.split("@")[0];
+
   return (
     <Wrapper>
       <NavbarContainer>
@@ -51,7 +53,7 @@ const Navbar = () => {
       {userDropdown && (
         <UserDropdownMenu>
           {" "}
-          <div>{userInfo?.email}</div>
+          <div>{userName}</div>
           <Link to="/settings">설정</Link>
           <Link onClick={handleSignOut}>로그아웃</Link>
         </UserDropdownMenu>
@@ -117,32 +119,6 @@ const UserIcon = styled.div`
   cursor: pointer;
   position: relative;
 `;
-
-// const UserDropdownMenu = styled.div.withConfig({
-//   shouldForwardProp: (prop) => prop !== "show",
-// })`
-//   position: absolute;
-//   top: 70px; /* Adjust according to the height of the Navbar */
-//   right: 0;
-//   background: white;
-//   border: 1px solid #ddd;
-//   border-radius: 8px;
-//   width: 150px;
-//   display: ${(props) => (props.show ? "block" : "none")};
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   z-index: 1000; /* Ensure the dropdown appears above other content */
-
-//   a {
-//     display: block;
-//     padding: 10px;
-//     text-decoration: none;
-//     color: black;
-
-//     &:hover {
-//       background-color: #f0f0f0;
-//     }
-//   }
-// `;
 
 const UserDropdownMenu = styled.div`
   position: absolute;

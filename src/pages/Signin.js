@@ -16,7 +16,7 @@ const Signin = () => {
   const [pw, setPW] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const isFormValid = email !== "" && pwf !== "";
+  const isFormValid = email !== "" && pw !== "";
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
