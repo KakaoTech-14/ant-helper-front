@@ -9,12 +9,15 @@ import {
   StyledButton,
 } from "../components/Common";
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../Auth";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const isFormValid = email !== "" && pw !== "";
 
@@ -45,20 +48,19 @@ const Signin = () => {
         }
       );
 
-      const { accessToken, refreshToken, userEmail } = response.data.data;
+      const { accessToken, refreshToken } = response.data.data;
 
       if (accessToken) {
         alert("로그인에 성공했습니다.");
 
+        login(email);
+
         // accessToken은 메모리에 저장함. 브라우저가 닫힐 때 자동삭제.
-        // refreshToken은 localStorage에 저장함.
         sessionStorage.setItem("accessToken", accessToken);
-        sessionStorage.setItem("email", userEmail);
+        // refreshToken은 localStorage에 저장함.
         localStorage.setItem("refreshToken", refreshToken);
 
-        //login(token, email); //AuthContext에서 login함수 불러와서 쓰기..?
-        //Navigate('/');
-        window.location.href = "/";
+        navigate("/");
       } else {
         setErrorMessage("로그인에 실패했습니다.");
       }
