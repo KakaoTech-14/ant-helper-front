@@ -32,7 +32,6 @@ const Navbar = () => {
     logout();
     window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
   };
-  console.log(userInfo); //TODO
 
   const userName = userInfo?.email.split("@")[0];
 
