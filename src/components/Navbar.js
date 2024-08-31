@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Auth";
 import { ReactComponent as NotificationIcon } from "../assets/icons/notifications.svg";
 import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
+import SearchBar from "./SearchBar";
+import SearchResults from "./SearchResults";
 
 const Navbar = () => {
   const { signedIn, userInfo, logout } = useAuth();
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
+  const [results, setResults] = useState([]);
+
+  const handleSearch = async (query) => {
+    //검색어 기반으로 api 호출함.
+    const response = await fetch(`/api/stocks?query${query}`);
+    const data = await response.json();
+    setResults(data); //검색 결과를 상태로 저장함
+  };
 
   const onClickUserDropdown = () => {
     setUserDropdown(!userDropdown);
@@ -22,6 +32,7 @@ const Navbar = () => {
     logout();
     window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
   };
+  console.log(userInfo); //TODO
 
   const userName = userInfo?.email.split("@")[0];
 
@@ -33,8 +44,9 @@ const Navbar = () => {
           <Link to="/">홈</Link>
           <Link to="/account">내 계좌</Link>
           <Link to="/ai-trade">AI 거래</Link>
-          <SearchBar type="text" placeholder="검색" />
+          <SearchBar onSearch={handleSearch} placeholder="검색" />
         </NavLinks>
+        <SearchResults results={results} />
         <UserMenu>
           {signedIn ? (
             <>
@@ -103,11 +115,11 @@ const NavLinks = styled.div`
   }
 `;
 
-const SearchBar = styled.input`
-  padding: 8px;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-`;
+// const SearchBar = styled.input`
+//   padding: 8px;
+//   border-radius: 20px;
+//   border: 1px solid #ddd;
+// `;
 
 const UserMenu = styled.div`
   display: flex;
