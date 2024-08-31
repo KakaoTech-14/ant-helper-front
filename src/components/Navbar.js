@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Auth";
 import { ReactComponent as NotificationIcon } from "../assets/icons/notifications.svg";
 import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
+import SearchBar from "./SearchBar";
+import SearchResults from "./SearchResults";
 
 const Navbar = () => {
-  const { signedIn, logout } = useAuth();
+  const { signedIn, userInfo, logout } = useAuth();
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
+  const [results, setResults] = useState([]);
+
+  const handleSearch = async (query) => {
+    //검색어 기반으로 api 호출함.
+    const response = await fetch(`/api/stocks?query${query}`);
+    const data = await response.json();
+    setResults(data); //검색 결과를 상태로 저장함
+  };
 
   const onClickUserDropdown = () => {
     setUserDropdown(!userDropdown);
@@ -23,6 +33,8 @@ const Navbar = () => {
     window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
   };
 
+  const userName = userInfo?.email.split("@")[0];
+
   return (
     <Wrapper>
       <NavbarContainer>
@@ -31,8 +43,9 @@ const Navbar = () => {
           <Link to="/">홈</Link>
           <Link to="/account">내 계좌</Link>
           <Link to="/ai-trade">AI 거래</Link>
-          <SearchBar type="text" placeholder="검색" />
+          <SearchBar onSearch={handleSearch} placeholder="검색" />
         </NavLinks>
+        <SearchResults results={results} />
         <UserMenu>
           {signedIn ? (
             <>
@@ -51,7 +64,7 @@ const Navbar = () => {
       {userDropdown && (
         <UserDropdownMenu>
           {" "}
-          <div>(사용자)</div>
+          <div>{userName}</div>
           <Link to="/settings">설정</Link>
           <Link onClick={handleSignOut}>로그아웃</Link>
         </UserDropdownMenu>
@@ -101,11 +114,11 @@ const NavLinks = styled.div`
   }
 `;
 
-const SearchBar = styled.input`
-  padding: 8px;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-`;
+// const SearchBar = styled.input`
+//   padding: 8px;
+//   border-radius: 20px;
+//   border: 1px solid #ddd;
+// `;
 
 const UserMenu = styled.div`
   display: flex;
@@ -117,32 +130,6 @@ const UserIcon = styled.div`
   cursor: pointer;
   position: relative;
 `;
-
-// const UserDropdownMenu = styled.div.withConfig({
-//   shouldForwardProp: (prop) => prop !== "show",
-// })`
-//   position: absolute;
-//   top: 70px; /* Adjust according to the height of the Navbar */
-//   right: 0;
-//   background: white;
-//   border: 1px solid #ddd;
-//   border-radius: 8px;
-//   width: 150px;
-//   display: ${(props) => (props.show ? "block" : "none")};
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   z-index: 1000; /* Ensure the dropdown appears above other content */
-
-//   a {
-//     display: block;
-//     padding: 10px;
-//     text-decoration: none;
-//     color: black;
-
-//     &:hover {
-//       background-color: #f0f0f0;
-//     }
-//   }
-// `;
 
 const UserDropdownMenu = styled.div`
   position: absolute;

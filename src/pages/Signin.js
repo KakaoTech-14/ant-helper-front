@@ -6,16 +6,18 @@ import {
   Inputs,
   Title,
   Wrapper,
-  Button,
   StyledButton,
 } from "../components/Common";
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../Auth";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const isFormValid = email !== "" && pw !== "";
 
@@ -51,11 +53,14 @@ const Signin = () => {
       if (accessToken) {
         alert("로그인에 성공했습니다.");
 
+        login(email);
+
         // accessToken은 메모리에 저장함. 브라우저가 닫힐 때 자동삭제.
-        // refreshToken은 localStorage에 저장함.
         sessionStorage.setItem("accessToken", accessToken);
+        // refreshToken은 localStorage에 저장함.
         localStorage.setItem("refreshToken", refreshToken);
-        window.location.href = "/";
+
+        navigate("/");
       } else {
         setErrorMessage("로그인에 실패했습니다.");
       }

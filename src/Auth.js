@@ -5,24 +5,35 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [signedIn, setSignedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
-    if (token) {
+    const email = sessionStorage.getItem("email"); // 이메일 정보를 세션에서 가져옴
+    if (token && email) {
       setSignedIn(true);
+      setUserInfo({ email });
     } else {
       setSignedIn(false);
+      setUserInfo(null);
     }
   }, []);
 
-  const login = () => setSignedIn(true);
+  const login = (email) => {
+    sessionStorage.setItem("email", email);
+    setSignedIn(true);
+    setUserInfo({ email });
+  };
+
   const logout = () => {
     setSignedIn(false);
-    sessionStorage.removeItem("accessToken"); // 로그아웃 시 토큰 삭제
+    setUserInfo(null);
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("email");
   };
 
   return (
-    <AuthContext.Provider value={{ signedIn, login, logout }}>
+    <AuthContext.Provider value={{ signedIn, userInfo, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
