@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Auth";
+import { useAuth } from "../contexts/AuthContext";
 import Navbar from "../components/Navbar";
 import { Wrapper } from "../components/Common";
 import AITable from "../components/AITable";

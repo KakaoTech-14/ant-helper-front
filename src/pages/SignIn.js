@@ -10,7 +10,7 @@ import {
 } from "../components/Common";
 import { styled } from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../Auth";
+import { useAuth } from "../contexts/AuthContext";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
