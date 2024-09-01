@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 
 const AITrade = () => {
   const [recommendations, setRecommendations] = useState([]);
@@ -31,7 +31,7 @@ const AITrade = () => {
 
   return (
     <Wrapper>
-      <Navbar />
+      <NavBar />
       <Container>
         <Recommendations>
           <div>AI 추천종목</div>

@@ -7,7 +7,7 @@ import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.sv
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
-const Navbar = () => {
+const NavBar = () => {
   const { signedIn, userInfo, logout } = useAuth();
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
@@ -37,7 +37,7 @@ const Navbar = () => {
 
   return (
     <Wrapper>
-      <NavbarContainer>
+      <NavBarContainer>
         <Logo>Ant Helper</Logo>
         <NavLinks>
           <Link to="/">홈</Link>
@@ -60,7 +60,7 @@ const Navbar = () => {
             <CustomLink to="/signin">로그인</CustomLink>
           )}
         </UserMenu>
-      </NavbarContainer>
+      </NavBarContainer>
       {userDropdown && (
         <UserDropdownMenu>
           {" "}
@@ -73,7 +73,7 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
 
 const Wrapper = styled.div`
   display: flex;
@@ -84,7 +84,7 @@ const Wrapper = styled.div`
   justify-items: center;
 `;
 
-const NavbarContainer = styled.nav`
+const NavBarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -93,7 +93,7 @@ const NavbarContainer = styled.nav`
   margin: 0 auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  position: relative; /* Important to keep the dropdown relative to Navbar */
+  position: relative; /* Important to keep the dropdown relative to NavBar */
 `;
 
 const Logo = styled.div`
@@ -133,7 +133,7 @@ const UserIcon = styled.div`
 
 const UserDropdownMenu = styled.div`
   position: absolute;
-  top: 70px; /* Adjust according to the height of the Navbar */
+  top: 70px; /* Adjust according to the height of the NavBar */
   right: 0;
   background: white;
   border: 1px solid #ddd;

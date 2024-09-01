@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Route, Routes } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import styled from "styled-components";
 
 const SettingsWrapper = styled.div`
@@ -47,7 +47,7 @@ const StyledNavLink = styled(NavLink)`
 const Settings = () => {
   return (
     <SettingsWrapper>
-      <Navbar />
+      <NavBar />
       <ContentContainer>
         <Sidebar>
           <StyledNavLink to="/settings" end>

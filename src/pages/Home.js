@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import { Wrapper } from "../components/Common";
 import AITable from "../components/AITable";
 import WatchTable from "../components/WatchTable";
@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <Navbar />
+      <NavBar />
       <TabsContainer>
         <Tab $active={activeTab === "ai"} onClick={() => setActiveTab("ai")}>
           AI 추천종목

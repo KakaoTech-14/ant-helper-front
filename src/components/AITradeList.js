@@ -1,2 +1,2 @@
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import { Wrapper } from "../components/Common";

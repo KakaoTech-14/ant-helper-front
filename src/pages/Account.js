@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import { Wrapper } from "../components/Common";
 
 const Account = () => {
   return (
     <Wrapper>
-      <Navbar />내 계좌
+      <NavBar />내 계좌
     </Wrapper>
   );
 };
