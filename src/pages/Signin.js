@@ -12,7 +12,7 @@ import { styled } from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../Auth";
 
-const Signin = () => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -97,7 +97,7 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignIn;
 
 const CustomLink = styled(Link)`
   margin: 10px;

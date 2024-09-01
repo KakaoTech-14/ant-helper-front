@@ -10,7 +10,7 @@ import {
   StyledButton,
 } from "../components/Common";
 
-const Signup = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [code, setAuthCode] = useState("");
   const [pw, setPW] = useState("");
@@ -82,7 +82,7 @@ const Signup = () => {
   };
 
   // 회원가입(signup) API
-  const onClickSignup = async () => {
+  const onClickSignUp = async () => {
     if (pw !== pwCheck) {
       setErrorMessage("비밀번호가 일치하지 않습니다.");
       return;
@@ -171,7 +171,7 @@ const Signup = () => {
             value={pwCheck}
             onChange={onChangePWCheck}
           />
-          <StyledButton onClick={onClickSignup} disabled={!authVerified}>
+          <StyledButton onClick={onClickSignUp} disabled={!authVerified}>
             확인
           </StyledButton>
         </Inputs>
@@ -181,4 +181,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
