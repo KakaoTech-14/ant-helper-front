@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useAuth } from "../Auth";
+import { useAuth } from "../contexts/AuthContext";
 import { ReactComponent as NotificationIcon } from "../assets/icons/notifications.svg";
 import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
 import SearchBar from "./SearchBar";
