@@ -19,11 +19,11 @@ const SearchBar = ({ onSearch }) => {
       onSearch(value);
     }
   };
-  const activeEnter = (e) => {
-    if (e.key === "Enter") {
-      activeButton();
-    }
-  };
+  // const activeEnter = (e) => {
+  //   if (e.key === "Enter") {
+  //     activeButton();
+  //   }
+  // };
 
   return (
     <StyledSearchBar
