@@ -14,8 +14,10 @@ const NavBar = () => {
   const [results, setResults] = useState([]);
 
   const handleSearch = async (query) => {
-    //검색어 기반으로 api 호출함.
-    const response = await fetch(`/api/stocks?query${query}`);
+    //검색어 기반으로 api 호출함. 이 api는 아직 미개발임
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/stocks?query${query}`
+    );
     const data = await response.json();
     setResults(data); //검색 결과를 상태로 저장함
   };
