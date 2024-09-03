@@ -9,7 +9,7 @@ const AITradeNew = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.ant-helper.com/api/stocks/recommendations")
+      .get(`${process.env.REACT_APP_API_URL}/api/stocks/recommendations`)
       .then((response) => setRecommendations(response.data))
       .catch((error) =>
         console.error('Error at "/api/stocks/recommendations"', error)
