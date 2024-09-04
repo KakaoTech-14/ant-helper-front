@@ -1,70 +1,65 @@
-import React from "react";
-import {
-  StockTableContainer,
-  Table,
-  TableHeader,
-  TableData,
-} from "./StockTable";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import StockItem from "./StockItem";
+import { StockTableContainer, Table, TableHeader } from "./StockTable";
 
 const WatchTable = () => {
-  // 현재 가짜 데이터임
-  const mockData = [
-    {
-      rank: 1,
-      name: "카카오",
-      price: 82000, //가격
-      change: 1200, // 변동 금액
-      changePercentage: 1.5, // 변동 퍼센트
-      volume: 20000000000, // 거래대금
-      amount: 500000, // 거래량(주)
-    },
-    {
-      rank: 2,
-      name: "삼성전자",
-      price: 68500,
-      change: -500,
-      changePercentage: -0.7,
-      volume: 30000000000,
-      amount: 1000000,
-    },
-    {
-      rank: 3,
-      name: "LG화학",
-      price: 600000,
-      change: 10000,
-      changePercentage: 1.7,
-      volume: 10000000000,
-      amount: 200000,
-    },
-    //...
-  ];
+  const [watchData, setWatchData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); //로딩 꼭 필요한가..?
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken"); // 토큰을 저장한 위치에서 가져옵니다.
+
+    const fetchWatchlist = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/watchlist`,
+          {
+            params: {
+              size: 10,
+              page: 0,
+            },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setIsLoading(false);
+
+        if (response.data.isSuccess && response.data.data) {
+          //isSuccess만 비교해도 될듯?
+          setWatchData(response.data.data.content);
+        }
+      } catch (error) {
+        console.error("관심종목을 가져오는데 실패했습니다.", error);
+        setIsLoading(false);
+      }
+    };
+    fetchWatchlist();
+  }, []);
+
+  if (isLoading) {
+    return <div>관심종목을 불러오는 중..</div>;
+  }
 
   return (
     <StockTableContainer>
       <Table>
         <thead>
           <tr>
-            <TableHeader>순위</TableHeader>
             <TableHeader>종목</TableHeader>
+            <TableHeader>코드</TableHeader>
             <TableHeader>현재가</TableHeader>
             <TableHeader>등락률</TableHeader>
-            <TableHeader>거래대금</TableHeader>
-            <TableHeader>거래량</TableHeader>
           </tr>
         </thead>
         <tbody>
-          {mockData.map((item, index) => (
-            <tr key={index}>
-              <TableData>{item.rank}</TableData>
-              <TableData>{item.name}</TableData>
-              <TableData>{item.price.toLocaleString()}원</TableData>
-              <TableData change={item.change}>
-                {item.change > 0 ? "+" : ""}
-                {item.change.toLocaleString()}원 ({item.changePercentage}%)
-              </TableData>
-              <TableData>{(item.volume / 100000000).toFixed(1)}억원</TableData>
-              <TableData>{item.amount.toLocaleString()}주</TableData>
-            </tr>
+          {watchData.map((item) => (
+            <StockItem
+              key={item.productNumber}
+              productNumber={item.productNumber}
+              defaultName={item.name} // Watchlist에서 받은 이름 전달
+            />
           ))}
         </tbody>
       </Table>
