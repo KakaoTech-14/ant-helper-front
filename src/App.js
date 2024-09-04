@@ -5,7 +5,6 @@ import { AITradeProvider } from "./contexts/AITradeContext";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import CodeInfo from "./components/CodeInfo";
 import Account from "./pages/Account";
 import AITrade from "./pages/AITrade";
 import Settings from "./pages/Settings";
@@ -20,7 +19,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/codeInfo" element={<CodeInfo />} />
           <Route
             path="/account"
             element={
