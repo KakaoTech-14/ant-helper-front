@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 
-const AITradeNew = () => {
+const AITradeExisting = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
 
@@ -70,7 +70,7 @@ const AITradeNew = () => {
   );
 };
 
-export default AITradeNew;
+export default AITradeExisting;
 
 const Wrapper = styled.div`
   display: flex;
