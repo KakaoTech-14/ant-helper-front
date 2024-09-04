@@ -44,7 +44,6 @@ const StockItem = ({ productNumber, defaultName }) => {
   return (
     <tr>
       <td>{stockData.itemName}</td>
-      <td>{productNumber}</td>
       <td>
         {stockData.currentPrice
           ? `${parseInt(stockData.currentPrice).toLocaleString()}원`

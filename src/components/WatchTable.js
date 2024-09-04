@@ -48,7 +48,6 @@ const WatchTable = () => {
         <thead>
           <tr>
             <TableHeader>종목</TableHeader>
-            <TableHeader>코드</TableHeader>
             <TableHeader>현재가</TableHeader>
             <TableHeader>등락률</TableHeader>
           </tr>
