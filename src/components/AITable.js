@@ -54,10 +54,9 @@ const AITable = () => {
           <tr>
             <TableHeader>순위</TableHeader>
             <TableHeader>종목</TableHeader>
+            <TableHeader>코드</TableHeader>
             <TableHeader>현재가</TableHeader>
             <TableHeader>등락률</TableHeader>
-            <TableHeader>거래대금</TableHeader>
-            <TableHeader>거래량</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -65,13 +64,12 @@ const AITable = () => {
             <tr key={index}>
               <TableData>{item.rank}</TableData>
               <TableData>{item.name}</TableData>
+              <TableData>{item.code}</TableData>
               <TableData>{item.price.toLocaleString()}원</TableData>
               <TableData change={item.change}>
                 {item.change > 0 ? "+" : ""}
                 {item.change.toLocaleString()}원 ({item.changePercentage}%)
               </TableData>
-              <TableData>{(item.volume / 100000000).toFixed(1)}억원</TableData>
-              <TableData>{item.amount.toLocaleString()}주</TableData>
             </tr>
           ))}
         </tbody>
