@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import apiClient from "../axiosConfig";
 import {
   Form,
   Input,
@@ -37,16 +37,11 @@ const SignIn = () => {
       formData.append("email", email);
       formData.append("pw", pw);
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/members/login`,
-
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await apiClient.post("/api/members/login", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       const { accessToken, refreshToken } = response.data.data;
 

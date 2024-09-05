@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import apiClient from "../axiosConfig";
 import {
   Form,
   Input,
@@ -40,8 +40,8 @@ const SignUp = () => {
   // 이메일 인증 요청(verification-request) API 처리
   const onClickSendCode = async () => {
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/members/email/verification-request`,
+      const response = await apiClient.post(
+        "/api/members/email/verification-request",
         {
           email: email,
         }
@@ -65,10 +65,10 @@ const SignUp = () => {
   // 인증번호 확인(verification) API 처리
   const onClickVerifyCode = async () => {
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/members/email/verification`,
-        { email, code }
-      );
+      const response = await apiClient.post("/api/members/email/verification", {
+        email,
+        code,
+      });
 
       if (response.data.isSuccess) {
         setAuthVerified(true);
@@ -98,15 +98,12 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/members/signup`,
-        {
-          email: email,
-          pw: pw,
-          appKey: "yourAppKey",
-          secretKey: "yourSecretKey",
-        }
-      );
+      const response = await apiClient.post("/api/members/signup", {
+        email: email,
+        pw: pw,
+        appKey: "yourAppKey",
+        secretKey: "yourSecretKey",
+      });
 
       if (response.data.isSuccess) {
         alert("회원가입을 완료했습니다.");

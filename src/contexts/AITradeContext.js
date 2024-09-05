@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
-
+import apiClient from "../axiosConfig";
 const AITradeContext = createContext();
 
 export const AITradeProvider = ({ children }) => {
@@ -8,8 +7,8 @@ export const AITradeProvider = ({ children }) => {
   const [transactionItems, setTransactionItems] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/api/transactions`)
+    apiClient
+      .get("/api/watchlist")
       .then((response) => {
         const { existence, transactionItems } = response.data.data;
         setIsTrading(existence);
