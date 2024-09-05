@@ -8,13 +8,13 @@ export const AITradeProvider = ({ children }) => {
 
   useEffect(() => {
     apiClient
-      .get("/api/watchlist")
+      .get("/api/transactions")
       .then((response) => {
         const { existence, transactionItems } = response.data.data;
         setIsTrading(existence);
         setTransactionItems(transactionItems || []);
       })
-      .catch((error) => console.error('Error at "/api/transactins"', error));
+      .catch((error) => console.error('Error at "/api/transactions"', error));
   }, []);
 
   return (
