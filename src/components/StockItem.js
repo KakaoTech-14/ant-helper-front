@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../axiosConfig";
+import { TableData } from "./StockTable";
+import WatchToggle from "./WatchToggle"; // WatchToggle 임포트
 
-const StockItem = ({ productNumber, defaultName }) => {
+const StockItem = ({ productNumber, defaultName, watchListId, industry }) => {
   const [stockData, setStockData] = useState({
     itemName: defaultName || "(추가예정)",
     currentPrice: null,
@@ -10,24 +12,15 @@ const StockItem = ({ productNumber, defaultName }) => {
   });
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken"); // 토큰을 저장한 위치에서 가져옵니다.
-
     const fetchStockData = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/stocks/price`,
-          {
-            params: { productNumber },
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(response);
+        const response = await apiClient.get(`/api/stocks/price`, {
+          params: { productNumber },
+        });
         if (response.data.isSuccess && response.data.data) {
           const { stck_prpr, prdy_vrss, prdy_ctrt } = response.data.data.output;
           setStockData({
-            itemName: defaultName || "(추가예정)", // 아직 이름 미구현, 기본값
+            itemName: defaultName || "(추가예정)",
             currentPrice: stck_prpr,
             change: prdy_vrss,
             changePercentage: prdy_ctrt,
@@ -43,19 +36,28 @@ const StockItem = ({ productNumber, defaultName }) => {
 
   return (
     <tr>
-      <td>{stockData.itemName}</td>
-      <td>
+      <TableData>
+        <WatchToggle
+          isWatchedInitial={true} // 처음에 관심목록에 있음
+          watchListId={watchListId}
+          productNumber={productNumber}
+          name={stockData.itemName}
+          industry={industry}
+        />
+      </TableData>
+      <TableData>{stockData.itemName}</TableData>
+      <TableData>
         {stockData.currentPrice
           ? `${parseInt(stockData.currentPrice).toLocaleString()}원`
           : "N/A"}
-      </td>
-      <td style={{ color: stockData.change > 0 ? "red" : "blue" }}>
+      </TableData>
+      <TableData change={stockData.change}>
         {stockData.change
           ? `${parseInt(stockData.change).toLocaleString()}원 (${
               stockData.changePercentage
             }%)`
           : "N/A"}
-      </td>
+      </TableData>
     </tr>
   );
 };
