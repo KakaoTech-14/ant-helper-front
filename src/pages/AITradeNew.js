@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../axiosConfig";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 
@@ -7,9 +7,10 @@ const AITradeNew = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
 
+  //AI추천종목 불러오기
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/api/stocks/recommendations`)
+    apiClient
+      .get("/api/stocks/recommendations")
       .then((response) => setRecommendations(response.data))
       .catch((error) =>
         console.error('Error at "/api/stocks/recommendations"', error)
@@ -33,6 +34,7 @@ const AITradeNew = () => {
     <Wrapper>
       <NavBar />
       <Container>
+        {/* AI 추천 종목 */}
         <Recommendations>
           <div>AI 추천종목</div>
           <ScrollArea>
@@ -47,6 +49,8 @@ const AITradeNew = () => {
             ))}
           </ScrollArea>
         </Recommendations>
+
+        {/* 담은 주식 */}
         <SelectedList>
           <div>담은 주식</div>
           <ScrollArea>
