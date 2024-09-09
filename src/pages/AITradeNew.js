@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import apiClient from '../axiosConfig';
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
+import Modal from '../components/Modal';
 
 const AITradeNew = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
+  const [capital, setCapital] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   //AI추천종목 불러오기
   useEffect(() => {
@@ -28,6 +31,15 @@ const AITradeNew = () => {
     setSelectedStocks(selectedStocks.filter((item) => item.name !== stock.name));
     setRecommendations([...recommendations, stock]);
   };
+  const handleNextClick = () => {
+    setIsModalOpen(true);
+    window.history.pushState(null, null, 'ai-trade/next');
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    window.history.back();
+  };
 
   return (
     <Wrapper>
@@ -35,7 +47,7 @@ const AITradeNew = () => {
       <Container>
         {/* AI 추천 종목 */}
         <Recommendations>
-          <div>AI 추천종목</div>
+          <StockHeader>AI 추천종목</StockHeader>
           <ScrollArea>
             {recommendations.map((stock, index) => (
               <StockItem key={index}>
@@ -49,25 +61,47 @@ const AITradeNew = () => {
           </ScrollArea>
         </Recommendations>
 
-        {/* 담은 주식 */}
+        {/* 담은 주식과 자본금*/}
         <SelectedList>
-          <div>담은 주식</div>
+          <StockHeader>담은 주식</StockHeader>
           <ScrollArea>
             {selectedStocks.map((stock, index) => (
               <StockItem key={index}>
                 <div>{stock.name}</div>
                 <div>
                   {stock.price}
-                  <button onClick={() => handleRemoveStock(stock)}>-</button>
+                  <ActionButton onClick={() => handleRemoveStock(stock)}>-</ActionButton>
                 </div>
               </StockItem>
             ))}
           </ScrollArea>
+          <CapitalInput>
+            <label>자본금 입력: </label>
+            <input
+              type="number"
+              value={capital}
+              onChange={(e) => setCapital(e.target.value)}
+              placeholder="자본금을 입력하세요"
+            />
+          </CapitalInput>
           <Footer>
             <div>{selectedStocks.length} / 10</div>
-            <button>다음</button>
+            <NextButton onClick={handleNextClick}>다음</NextButton>
           </Footer>
         </SelectedList>
+        {/* 모달 창 */}
+        {isModalOpen && (
+          <Modal onClose={handleCloseModal}>
+            <Disclaimer>
+              <CloseButton onClick={handleCloseModal}>이전</CloseButton>
+              <h2>면책 조항</h2>
+              <p>이대로 거래를 진행하시겠습니까?</p>
+              <ModalFooter>
+                <ActionButton>AI 거래 시작</ActionButton>
+              </ModalFooter>
+            </Disclaimer>
+          </Modal>
+        )}
       </Container>
     </Wrapper>
   );
@@ -86,6 +120,10 @@ const Container = styled.div`
   justify-content: space-evenly;
 `;
 
+const StockHeader = styled.div`
+  margin-bottom: 20px;
+`;
+
 const Recommendations = styled.div`
   width: 40%;
   padding: 10px;
@@ -93,6 +131,7 @@ const Recommendations = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
 `;
+
 const SelectedList = styled.div`
   display: flex;
   flex-direction: column;
@@ -103,6 +142,7 @@ const SelectedList = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
 `;
+
 const ScrollArea = styled.div`
   max-height: 400px; // 필요에 따라 조정 가능
   overflow-y: auto;
@@ -115,10 +155,58 @@ const StockItem = styled.div`
   margin-bottom: 10px;
 `;
 
+const CapitalInput = styled.div`
+  input {
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  margin-bottom: 20px;
+`;
+
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
   padding: 10px 0;
+`;
+
+const NextButton = styled.button`
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+const Disclaimer = styled.div`
+  text-align: center;
+  padding: 20px;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+const ModalFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+`;
+
+const ActionButton = styled.button`
+  padding: 0px 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 `;
