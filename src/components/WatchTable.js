@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiClient from '../axiosConfig';
 import StockItem from './StockItem';
 import { StockTableContainer, Table, TableHeader } from './StockTable';
@@ -20,7 +20,7 @@ const WatchTable = () => {
           setWatchData(response.data.data.content);
         }
       } catch (error) {
-        console.error('WatchTable에서 관심종목을 가져오는 중 오류 발생', error);
+        console.error('관심종목을 가져오는 중 오류 발생', error);
       }
     };
 
@@ -32,7 +32,7 @@ const WatchTable = () => {
       <Table>
         <thead>
           <tr>
-            <TableHeader> </TableHeader> {/* 하트 아이콘 칸 */}
+            <TableHeader style={{ width: '50px' }}> </TableHeader> {/* 하트 아이콘 칸 */}
             <TableHeader>종목</TableHeader>
             <TableHeader>현재가</TableHeader>
             <TableHeader>등락률</TableHeader>
@@ -44,8 +44,9 @@ const WatchTable = () => {
               key={item.productNumber}
               productNumber={item.productNumber}
               defaultName={item.name}
-              watchListId={item.id} // 관심목록 ID 전달
-              industry={item.industry} // 필요시 전달
+              watchListId={item.id}
+              industry={item.industry}
+              isWatchTable={true}
             />
           ))}
         </tbody>
