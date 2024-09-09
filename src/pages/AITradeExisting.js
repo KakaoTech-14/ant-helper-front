@@ -1,55 +1,55 @@
-import { useState, useEffect } from 'react'
-import apiClient from '../axiosConfig'
-import styled from 'styled-components'
-import NavBar from '../components/NavBar'
+import { useEffect, useState } from 'react';
+import apiClient from '../axiosConfig';
+import styled from 'styled-components';
+import NavBar from '../components/NavBar';
 
 const AITradeExisting = () => {
-  const [recommendations, setRecommendations] = useState([])
-  const [selectedStocks, setSelectedStocks] = useState([])
+  const [recommendations, setRecommendations] = useState([]);
+  const [selectedStocks, setSelectedStocks] = useState([]);
 
   // AI 추천 종목 불러오기
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await apiClient.get('/api/stocks/recommendations')
-        setRecommendations(response.data)
+        const response = await apiClient.get('/api/stocks/recommendations');
+        setRecommendations(response.data);
       } catch (error) {
-        console.error('Error at "/api/stocks/recommendations"', error)
+        console.error('Error at "/api/stocks/recommendations"', error);
       }
-    }
+    };
 
-    fetchRecommendations()
-  }, [])
+    fetchRecommendations();
+  }, []);
 
   // 담은 주식 불러오기
   useEffect(() => {
     const fetchSelectedStocks = async () => {
       try {
-        const response = await apiClient.get('/api/transactions')
+        const response = await apiClient.get('/api/transactions');
         if (response.data.isSuccess && response.data.data.existence) {
-          setSelectedStocks(response.data.data.transactionItems)
+          setSelectedStocks(response.data.data.transactionItems);
         } else {
-          console.log('No selected stocks found.')
+          console.log('No selected stocks found.');
         }
       } catch (error) {
-        console.error('Error at "/api/transactions"', error)
+        console.error('Error at "/api/transactions"', error);
       }
-    }
+    };
 
-    fetchSelectedStocks()
-  }, [])
+    fetchSelectedStocks();
+  }, []);
 
   // 종목 담기
   const handleAddStock = (stock) => {
-    setSelectedStocks([...selectedStocks, stock])
-    setRecommendations(recommendations.filter((item) => item.name !== stock.name))
-  }
+    setSelectedStocks([...selectedStocks, stock]);
+    setRecommendations(recommendations.filter((item) => item.name !== stock.name));
+  };
 
   // 종목 삭제
   const handleRemoveStock = (stock) => {
-    setSelectedStocks(selectedStocks.filter((item) => item.name !== stock.name))
-    setRecommendations([...recommendations, stock])
-  }
+    setSelectedStocks(selectedStocks.filter((item) => item.name !== stock.name));
+    setRecommendations([...recommendations, stock]);
+  };
 
   return (
     <Wrapper>
@@ -92,21 +92,21 @@ const AITradeExisting = () => {
         </SelectedList>
       </Container>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default AITradeExisting
+export default AITradeExisting;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Container = styled.div`
   display: flex;
   margin-top: 40px;
   justify-content: space-evenly;
-`
+`;
 
 const Recommendations = styled.div`
   width: 40%;
@@ -114,7 +114,7 @@ const Recommendations = styled.div`
   margin: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-`
+`;
 
 const SelectedList = styled.div`
   display: flex;
@@ -125,19 +125,19 @@ const SelectedList = styled.div`
   margin: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-`
+`;
 
 const ScrollArea = styled.div`
   max-height: 400px;
   overflow-y: auto;
-`
+`;
 
 const StockItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-`
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -145,7 +145,7 @@ const Footer = styled.div`
   align-items: center;
   margin-top: auto;
   padding: 10px 0;
-`
+`;
 
 // import { useState, useEffect } from "react";
 // import apiClient from "../axiosConfig"; // apiClient로 변경

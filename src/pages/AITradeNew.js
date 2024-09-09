@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react'
-import apiClient from '../axiosConfig'
-import styled from 'styled-components'
-import NavBar from '../components/NavBar'
+import { useEffect, useState } from 'react';
+import apiClient from '../axiosConfig';
+import styled from 'styled-components';
+import NavBar from '../components/NavBar';
 
 const AITradeNew = () => {
-  const [recommendations, setRecommendations] = useState([])
-  const [selectedStocks, setSelectedStocks] = useState([])
+  const [recommendations, setRecommendations] = useState([]);
+  const [selectedStocks, setSelectedStocks] = useState([]);
 
   //AI추천종목 불러오기
   useEffect(() => {
     apiClient
       .get('/api/stocks/recommendations')
       .then((response) => setRecommendations(response.data))
-      .catch((error) => console.error('Error at "/api/stocks/recommendations"', error))
-  }, [])
+      .catch((error) => console.error('Error at "/api/stocks/recommendations"', error));
+  }, []);
   const handleAddStock = (stock) => {
-    setSelectedStocks([...selectedStocks, stock])
-    setRecommendations(recommendations.filter((item) => item.name !== stock.name))
-  }
+    setSelectedStocks([...selectedStocks, stock]);
+    setRecommendations(recommendations.filter((item) => item.name !== stock.name));
+  };
 
   const handleRemoveStock = (stock) => {
-    setSelectedStocks(selectedStocks.filter((item) => item.name !== stock.name))
-    setRecommendations([...recommendations, stock])
-  }
+    setSelectedStocks(selectedStocks.filter((item) => item.name !== stock.name));
+    setRecommendations([...recommendations, stock]);
+  };
 
   return (
     <Wrapper>
@@ -65,21 +65,21 @@ const AITradeNew = () => {
         </SelectedList>
       </Container>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default AITradeNew
+export default AITradeNew;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Container = styled.div`
   display: flex;
   margin-top: 40px;
   justify-content: space-evenly;
-`
+`;
 
 const Recommendations = styled.div`
   width: 40%;
@@ -87,7 +87,7 @@ const Recommendations = styled.div`
   margin: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-`
+`;
 const SelectedList = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,18 +97,18 @@ const SelectedList = styled.div`
   margin: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-`
+`;
 const ScrollArea = styled.div`
   max-height: 400px; // 필요에 따라 조정 가능
   overflow-y: auto;
-`
+`;
 
 const StockItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-`
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -116,4 +116,4 @@ const Footer = styled.div`
   align-items: center;
   margin-top: auto;
   padding: 10px 0;
-`
+`;

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import apiClient from '../axiosConfig'
-import StockItem from "./StockItem";
-import { StockTableContainer, Table, TableHeader } from "./StockTable";
+import React, { useEffect, useState } from 'react';
+import apiClient from '../axiosConfig';
+import StockItem from './StockItem';
+import { StockTableContainer, Table, TableHeader } from './StockTable';
 
 const WatchTable = () => {
   const [watchData, setWatchData] = useState([]);
@@ -9,7 +9,7 @@ const WatchTable = () => {
   useEffect(() => {
     const fetchWatchList = async () => {
       try {
-        const response = await apiClient.get("/api/watchlist", {
+        const response = await apiClient.get('/api/watchlist', {
           params: {
             size: 10,
             page: 0,
@@ -20,7 +20,7 @@ const WatchTable = () => {
           setWatchData(response.data.data.content);
         }
       } catch (error) {
-        console.error("WatchTable에서 관심종목을 가져오는 중 오류 발생", error);
+        console.error('WatchTable에서 관심종목을 가져오는 중 오류 발생', error);
       }
     };
 

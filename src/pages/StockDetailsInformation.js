@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Body, Wrapper } from '../components/Common'
-import NavBar from '../components/NavBar'
-import CandleStickChart from '../components/CandleStickChart'
+import React, { useState } from 'react';
+import { Body, Wrapper } from '../components/Common';
+import NavBar from '../components/NavBar';
+import CandleStickChart from '../components/CandleStickChart';
 
 const StockDetailsInformation = () => {
-  const [periodCode, setPeriodCode] = useState('D')
+  const [periodCode, setPeriodCode] = useState('D');
 
   return (
     <Wrapper>
@@ -15,7 +15,7 @@ const StockDetailsInformation = () => {
         </div>
       </Body>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default StockDetailsInformation
+export default StockDetailsInformation;

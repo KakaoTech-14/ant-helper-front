@@ -1,5 +1,5 @@
-import React from 'react'
-import { StockTableContainer, Table, TableHeader, TableData } from './StockTable'
+import React from 'react';
+import { StockTableContainer, Table, TableData, TableHeader } from './StockTable';
 
 const AITable = () => {
   // 가짜 데이터
@@ -40,7 +40,7 @@ const AITable = () => {
       volume: 670000000,
       amount: 53086,
     },
-  ]
+  ];
 
   return (
     <StockTableContainer>
@@ -68,7 +68,7 @@ const AITable = () => {
         </tbody>
       </Table>
     </StockTableContainer>
-  )
-}
+  );
+};
 
-export default AITable
+export default AITable;

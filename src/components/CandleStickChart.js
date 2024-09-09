@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   BarElement,
   CategoryScale,
@@ -7,24 +7,24 @@ import {
   LinearScale,
   Title,
   Tooltip,
-} from 'chart.js'
-import { Bar } from 'react-chartjs-2'
-import axiosClient from '../axiosConfig'
-import { ButtonGroupItem } from './Common'
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import axiosClient from '../axiosConfig';
+import { ButtonGroupItem } from './Common';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const BUTTONS = [
   { label: '일', value: 'D' },
   { label: '주', value: 'W' },
   { label: '월', value: 'M' },
   { label: '년', value: 'Y' },
-]
+];
 
 const CandlestickChart = ({ productNumber }) => {
-  const [chartData, setChartData] = useState(null)
-  const [name, setName] = useState('')
-  const [periodCode, setPeriodCode] = useState('D')
+  const [chartData, setChartData] = useState(null);
+  const [name, setName] = useState('');
+  const [periodCode, setPeriodCode] = useState('D');
 
   useEffect(() => {
     // API 호출 함수
@@ -38,22 +38,22 @@ const CandlestickChart = ({ productNumber }) => {
               periodCode: periodCode,
             },
           },
-        )
+        );
 
         if (response.data.isSuccess) {
-          let stockData = response.data.data.output2
+          let stockData = response.data.data.output2;
 
           // 데이터를 최신순으로 정렬
-          stockData = stockData.reverse()
+          stockData = stockData.reverse();
 
-          const labels = stockData.map((item) => item.stck_bsop_date)
+          const labels = stockData.map((item) => item.stck_bsop_date);
           const data = stockData.map((item) => ({
             x: item.stck_bsop_date,
             y: [item.stck_oprc, item.stck_clpr, item.stck_hgpr, item.stck_lwpr],
-          }))
+          }));
           const backgroundColor = stockData.map((item) =>
             item.stck_clpr > item.stck_oprc ? 'red' : 'blue',
-          )
+          );
 
           setChartData({
             labels,
@@ -66,16 +66,16 @@ const CandlestickChart = ({ productNumber }) => {
                 borderWidth: 2,
               },
             ],
-          })
-          setName(response.data.data.output1.hts_kor_isnm)
+          });
+          setName(response.data.data.output1.hts_kor_isnm);
         }
       } catch (error) {
-        console.error('Failed to fetch stock data:', error)
+        console.error('Failed to fetch stock data:', error);
       }
-    }
+    };
 
-    fetchStockData()
-  }, [periodCode])
+    fetchStockData();
+  }, [periodCode]);
 
   const options = {
     responsive: true,
@@ -92,7 +92,7 @@ const CandlestickChart = ({ productNumber }) => {
         display: false,
       },
     },
-  }
+  };
 
   return (
     <div>
@@ -107,7 +107,7 @@ const CandlestickChart = ({ productNumber }) => {
       </div>
       {chartData ? <Bar options={options} data={chartData} /> : <p>Loading chart...</p>}
     </div>
-  )
-}
+  );
+};
 
-export default CandlestickChart
+export default CandlestickChart;

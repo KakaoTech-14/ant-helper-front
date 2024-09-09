@@ -1,16 +1,16 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import ProtectedRoute from './contexts/ProtectedRoutes'
-import { AuthProvider } from './contexts/AuthContext'
-import { AITradeProvider } from './contexts/AITradeContext'
-import Home from './pages/Home'
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
-import Account from './pages/Account'
-import AITrade from './pages/AITrade'
-import Settings from './pages/Settings'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from './contexts/ProtectedRoutes';
+import { AuthProvider } from './contexts/AuthContext';
+import { AITradeProvider } from './contexts/AITradeContext';
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import Account from './pages/Account';
+import AITrade from './pages/AITrade';
+import Settings from './pages/Settings';
 
-import './App.css'
-import StockDetailsInformation from './pages/StockDetailsInformation'
+import './App.css';
+import StockDetailsInformation from './pages/StockDetailsInformation';
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
