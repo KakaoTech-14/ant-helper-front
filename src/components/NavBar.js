@@ -38,7 +38,6 @@ const NavBar = () => {
           <Link to="/ai-trade">AI 거래</Link>
           <Search />
         </NavLinks>
-        <SearchResults results={results} />
         <UserMenu>
           {signedIn ? (
             <>
