@@ -11,8 +11,13 @@ const AITradeExisting = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await apiClient.get('/api/stocks/recommendations');
-        setRecommendations(response.data);
+        const response = await apiClient.get('/api/stocks/recommendations', {
+          params: {
+            size: 10,
+            page: 0,
+          },
+        });
+        setRecommendations(response.data.data);
       } catch (error) {
         console.error('Error at "/api/stocks/recommendations"', error);
       }

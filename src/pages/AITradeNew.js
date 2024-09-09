@@ -10,8 +10,13 @@ const AITradeNew = () => {
   //AI추천종목 불러오기
   useEffect(() => {
     apiClient
-      .get('/api/stocks/recommendations')
-      .then((response) => setRecommendations(response.data))
+      .get('/api/stocks/recommendations', {
+        params: {
+          size: 10,
+          page: 0,
+        },
+      })
+      .then((response) => setRecommendations(response.data.data))
       .catch((error) => console.error('Error at "/api/stocks/recommendations"', error));
   }, []);
   const handleAddStock = (stock) => {
