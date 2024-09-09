@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 export const StockTableContainer = styled.div`
   width: 60%;
+  max-width: 600px;
   padding-left: 20px;
   box-sizing: border-box;
 `;
 
 export const Table = styled.table`
   width: 100%;
+  max-width: 600px;
   border-collapse: collapse;
 `;
 
