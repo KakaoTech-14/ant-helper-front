@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ReactComponent as NotificationIcon } from '../assets/icons/notifications.svg';
 import { ReactComponent as AccountIcon } from '../assets/icons/account_circle.svg';
-import SearchResults from './SearchResults';
 import Search from './Search';
 
 const NavBar = () => {
   const { signedIn, userInfo, logout } = useAuth();
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
-  const [results, setResults] = useState([]);
 
   const onClickUserDropdown = () => {
     setUserDropdown(!userDropdown);
