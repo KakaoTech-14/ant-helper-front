@@ -91,13 +91,13 @@ const AITradeNew = () => {
           <StockHeader>담은 주식</StockHeader>
           <ScrollArea>
             {selectedStocks.map((stock, index) => (
-              <StockItem key={index}>
+              <TradeItem key={index}>
                 <div>{stock.name}</div>
                 <div>
                   {stock.price}
                   <ActionButton onClick={() => handleRemoveStock(stock)}>-</ActionButton>
                 </div>
-              </StockItem>
+              </TradeItem>
             ))}
           </ScrollArea>
           <CapitalInput>
