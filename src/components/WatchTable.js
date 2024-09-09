@@ -16,7 +16,7 @@ const WatchTable = () => {
           },
         });
 
-        if (response.data.isSuccess && response.data.data) {
+        if (response.data.isSuccess) {
           setWatchData(response.data.data.content);
         }
       } catch (error) {

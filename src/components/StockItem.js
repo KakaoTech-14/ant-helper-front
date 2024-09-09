@@ -18,7 +18,7 @@ const StockItem = ({ productNumber, defaultName, watchListId, industry, isWatchT
         params: { productNumber },
       });
 
-      if (response.data.isSuccess && response.data.data) {
+      if (response.data.isSuccess) {
         const { stck_prpr, prdy_vrss, prdy_ctrt } = response.data.data.output;
         setStockData({
           itemName: defaultName || '(추가예정)',

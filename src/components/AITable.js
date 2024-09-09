@@ -16,7 +16,7 @@ const AITable = () => {
           },
         });
 
-        if (response.data.isSuccess && response.data.data) {
+        if (response.data.isSuccess) {
           setAIRecommendations(response.data.data);
         }
       } catch (error) {
