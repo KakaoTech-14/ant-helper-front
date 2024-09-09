@@ -70,8 +70,8 @@ export const ButtonGroupItem = ({ text, onClick, isClicked }) => {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 text-sm bg-white hover:bg-gray-100
-            ${isClicked ? 'bg-gray-100' : 'bg-white'}`}>
+      className={`px-4 py-2 text-sm hover:bg-gray-100
+            ${isClicked ? 'bg-gray-200' : 'bg-white'}`}>
       {text}
     </button>
   )
