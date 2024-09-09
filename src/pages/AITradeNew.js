@@ -151,6 +151,7 @@ const StockHeader = styled.div`
 
 const Recommendations = styled.div`
   width: 40%;
+  max-width: 500px;
   padding: 10px;
   margin: 20px;
   border: 1px solid #ddd;
@@ -161,6 +162,7 @@ const SelectedList = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
+  max-width: 500px;
   min-height: 300px;
   padding: 10px;
   margin: 20px;
