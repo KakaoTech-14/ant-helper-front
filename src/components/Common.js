@@ -59,3 +59,6 @@ export const StyledButton = styled(Button)`
     background-color: ${(props) => (props.disabled ? "#d3d3d3" : "black")};
   }
 `;
+export const Body = styled.div`
+    width: 60%;
+`;

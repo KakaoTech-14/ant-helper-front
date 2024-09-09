@@ -10,6 +10,7 @@ import AITrade from "./pages/AITrade";
 import Settings from "./pages/Settings";
 
 import "./App.css";
+import StockDetailsInformation from "./pages/StockDetailsInformation";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             }
           />
           <Route path="/settings/*" element={<Settings />} />
+          <Route path="/stock-chart" element={<StockDetailsInformation />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
