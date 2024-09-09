@@ -54,7 +54,7 @@ const AITradeNew = () => {
                 <div>{stock.name}</div>
                 <div>
                   {stock.price}
-                  <button onClick={() => handleAddStock(stock)}>담기</button>
+                  <ActionButton onClick={() => handleAddStock(stock)}>담기</ActionButton>
                 </div>
               </StockItem>
             ))}
@@ -86,7 +86,7 @@ const AITradeNew = () => {
           </CapitalInput>
           <Footer>
             <div>{selectedStocks.length} / 10</div>
-            <NextButton onClick={handleNextClick}>다음</NextButton>
+            <ActionButton onClick={handleNextClick}>다음</ActionButton>
           </Footer>
         </SelectedList>
         {/* 모달 창 */}
@@ -173,15 +173,6 @@ const Footer = styled.div`
   padding: 10px 0;
 `;
 
-const NextButton = styled.button`
-  padding: 10px 20px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
-
 const Disclaimer = styled.div`
   text-align: center;
   padding: 20px;
@@ -203,7 +194,7 @@ const ModalFooter = styled.div`
 `;
 
 const ActionButton = styled.button`
-  padding: 0px 10px;
+  padding: 5px 10px;
   background-color: black;
   color: white;
   border: none;
