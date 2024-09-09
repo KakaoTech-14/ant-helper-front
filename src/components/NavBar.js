@@ -38,7 +38,7 @@ const NavBar = () => {
   return (
     <Wrapper>
       <NavBarContainer>
-        <Logo>Ant Helper</Logo>
+        <Logo href={'/'}>Ant Helper</Logo>
         <NavLinks>
           <Link to="/">홈</Link>
           <Link to="/account">내 계좌</Link>
@@ -96,7 +96,7 @@ const NavBarContainer = styled.nav`
   position: relative; /* Important to keep the dropdown relative to NavBar */
 `
 
-const Logo = styled.div`
+const Logo = styled.a`
   font-size: 24px;
   font-weight: bold;
 `
