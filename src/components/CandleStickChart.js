@@ -75,7 +75,7 @@ const CandlestickChart = ({ productNumber }) => {
     };
 
     fetchStockData();
-  }, [periodCode]);
+  }, [periodCode, productNumber]);
 
   const options = {
     responsive: true,
@@ -100,6 +100,7 @@ const CandlestickChart = ({ productNumber }) => {
       <div className="inline-flex rounded-md shadow-sm">
         {BUTTONS.map((button, index) => (
           <ButtonGroupItem
+            key={index}
             text={button.label}
             onClick={() => setPeriodCode(button.value)}
             isClicked={periodCode === button.value}></ButtonGroupItem>

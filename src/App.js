@@ -39,7 +39,7 @@ function App() {
             }
           />
           <Route path="/settings/*" element={<Settings />} />
-          <Route path="/stock-chart" element={<StockDetailsInformation />} />
+          <Route path="/stock-chart/:productNumber" element={<StockDetailsInformation />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

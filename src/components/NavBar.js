@@ -4,20 +4,14 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ReactComponent as NotificationIcon } from '../assets/icons/notifications.svg';
 import { ReactComponent as AccountIcon } from '../assets/icons/account_circle.svg';
-import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
+import Search from './Search';
 
 const NavBar = () => {
   const { signedIn, userInfo, logout } = useAuth();
   const [userDropdown, setUserDropdown] = useState(false);
   const [noticeDropdown, setNoticeDropdown] = useState(false);
   const [results, setResults] = useState([]);
-
-  const handleSearch = async (query) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/stocks?query=${query}`);
-    const data = await response.json();
-    setResults(data); //검색 결과를 상태로 저장함
-  };
 
   const onClickUserDropdown = () => {
     setUserDropdown(!userDropdown);
@@ -42,7 +36,7 @@ const NavBar = () => {
           <Link to="/">홈</Link>
           <Link to="/account">내 계좌</Link>
           <Link to="/ai-trade">AI 거래</Link>
-          <SearchBar onSearch={handleSearch} placeholder="검색" />
+          <Search />
         </NavLinks>
         <SearchResults results={results} />
         <UserMenu>

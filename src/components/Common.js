@@ -76,3 +76,11 @@ export const ButtonGroupItem = ({ text, onClick, isClicked }) => {
     </button>
   );
 };
+
+export const StyledSearchBar = styled.input`
+  padding: 8px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  font-size: 16px;
+`;
