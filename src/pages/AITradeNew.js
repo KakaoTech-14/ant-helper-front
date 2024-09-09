@@ -29,7 +29,7 @@ const AITradeNew = () => {
         params: { productNumber },
       });
 
-      if (response.data.isSuccess && response.data.data) {
+      if (response.data.isSuccess) {
         return response.data.data.output.stck_prpr;
       } else {
         return 'N/A';
