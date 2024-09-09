@@ -71,7 +71,7 @@ const AITradeNew = () => {
           <StockHeader>AI 추천종목</StockHeader>
           <ScrollArea>
             {recommendations.map((stock, index) => (
-              <StockItem key={index}>
+              <TradeItem key={index}>
                 <div>
                   {stock.name}
                   <span style={{ marginLeft: '10px' }}>
@@ -81,7 +81,7 @@ const AITradeNew = () => {
                 <div>
                   <ActionButton onClick={() => handleAddStock(stock)}>담기</ActionButton>
                 </div>
-              </StockItem>
+              </TradeItem>
             ))}
           </ScrollArea>
         </Recommendations>
@@ -173,7 +173,7 @@ const ScrollArea = styled.div`
   overflow-y: auto;
 `;
 
-const StockItem = styled.div`
+const TradeItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
