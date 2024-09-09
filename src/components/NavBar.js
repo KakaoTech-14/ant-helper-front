@@ -1,41 +1,39 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import { ReactComponent as NotificationIcon } from "../assets/icons/notifications.svg";
-import { ReactComponent as AccountIcon } from "../assets/icons/account_circle.svg";
-import SearchBar from "./SearchBar";
-import SearchResults from "./SearchResults";
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { ReactComponent as NotificationIcon } from '../assets/icons/notifications.svg'
+import { ReactComponent as AccountIcon } from '../assets/icons/account_circle.svg'
+import SearchBar from './SearchBar'
+import SearchResults from './SearchResults'
 
 const NavBar = () => {
-  const { signedIn, userInfo, logout } = useAuth();
-  const [userDropdown, setUserDropdown] = useState(false);
-  const [noticeDropdown, setNoticeDropdown] = useState(false);
-  const [results, setResults] = useState([]);
+  const { signedIn, userInfo, logout } = useAuth()
+  const [userDropdown, setUserDropdown] = useState(false)
+  const [noticeDropdown, setNoticeDropdown] = useState(false)
+  const [results, setResults] = useState([])
 
   const handleSearch = async (query) => {
     //검색어 기반으로 api 호출함. 이 api는 아직 미개발임
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/stocks?query${query}`
-    );
-    const data = await response.json();
-    setResults(data); //검색 결과를 상태로 저장함
-  };
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/stocks?query${query}`)
+    const data = await response.json()
+    setResults(data) //검색 결과를 상태로 저장함
+  }
 
   const onClickUserDropdown = () => {
-    setUserDropdown(!userDropdown);
-  };
+    setUserDropdown(!userDropdown)
+  }
 
   const onClickNoticeDropdown = () => {
-    setNoticeDropdown(!noticeDropdown);
-  };
+    setNoticeDropdown(!noticeDropdown)
+  }
 
   const handleSignOut = () => {
-    logout();
-    window.location.href = "/"; // 로그아웃하면 홈페이지로 리디렉션
-  };
+    logout()
+    window.location.href = '/' // 로그아웃하면 홈페이지로 리디렉션
+  }
 
-  const userName = userInfo?.email.split("@")[0];
+  const userName = userInfo?.email.split('@')[0]
 
   return (
     <Wrapper>
@@ -65,17 +63,17 @@ const NavBar = () => {
       </NavBarContainer>
       {userDropdown && (
         <UserDropdownMenu>
-          {" "}
+          {' '}
           <div>{userName}</div>
           <Link to="/settings">설정</Link>
           <Link onClick={handleSignOut}>로그아웃</Link>
         </UserDropdownMenu>
       )}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar
 
 const Wrapper = styled.div`
   display: flex;
@@ -84,7 +82,7 @@ const Wrapper = styled.div`
   max-width: 100%;
   align-items: center;
   justify-items: center;
-`;
+`
 
 const NavBarContainer = styled.nav`
   display: flex;
@@ -96,12 +94,12 @@ const NavBarContainer = styled.nav`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   position: relative; /* Important to keep the dropdown relative to NavBar */
-`;
+`
 
 const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
-`;
+`
 
 const NavLinks = styled.div`
   display: flex;
@@ -114,7 +112,7 @@ const NavLinks = styled.div`
     color: black;
     font-weight: 500;
   }
-`;
+`
 
 // const SearchBar = styled.input`
 //   padding: 8px;
@@ -125,13 +123,13 @@ const NavLinks = styled.div`
 const UserMenu = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const UserIcon = styled.div`
   margin-left: 20px;
   cursor: pointer;
   position: relative;
-`;
+`
 
 const UserDropdownMenu = styled.div`
   position: absolute;
@@ -154,7 +152,7 @@ const UserDropdownMenu = styled.div`
       background-color: #f0f0f0;
     }
   }
-`;
+`
 
 const CustomLink = styled(Link)`
   color: grey;
@@ -163,4 +161,4 @@ const CustomLink = styled(Link)`
     color: grey;
     text-decoration: none;
   }
-`;
+`

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import apiClient from "../axiosConfig";
+import apiClient from '../axiosConfig'
 import StockItem from "./StockItem";
 import { StockTableContainer, Table, TableHeader } from "./StockTable";
 

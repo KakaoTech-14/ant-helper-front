@@ -1,30 +1,30 @@
-import React from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import styled from "styled-components";
+import React from 'react'
+import { NavLink, Route, Routes } from 'react-router-dom'
+import NavBar from '../components/NavBar'
+import styled from 'styled-components'
 
 const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100vh;
-`;
+`
 
 const ContentContainer = styled.div`
   display: flex;
   flex-grow: 1;
-`;
+`
 
 const Sidebar = styled.div`
   width: 200px;
   padding: 20px;
   border-right: 1px solid #ddd;
-`;
+`
 
 const Content = styled.div`
   flex-grow: 1;
   padding: 20px;
-`;
+`
 
 const StyledNavLink = styled(NavLink)`
   display: block;
@@ -33,7 +33,7 @@ const StyledNavLink = styled(NavLink)`
   color: black;
   font-size: 20px;
 
-  font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
+  font-weight: ${(props) => (props.isActive ? 'bold' : 'normal')};
 
   &:hover {
     text-decoration: underline;
@@ -42,7 +42,7 @@ const StyledNavLink = styled(NavLink)`
   &.active {
     font-weight: bold;
   }
-`;
+`
 
 const Settings = () => {
   return (
@@ -53,9 +53,7 @@ const Settings = () => {
           <StyledNavLink to="/settings" end>
             설정
           </StyledNavLink>
-          <StyledNavLink to="/settings/investment-preference">
-            투자 성향 변경
-          </StyledNavLink>
+          <StyledNavLink to="/settings/investment-preference">투자 성향 변경</StyledNavLink>
         </Sidebar>
         <Content>
           <Routes>
@@ -72,7 +70,7 @@ const Settings = () => {
         </Content>
       </ContentContainer>
     </SettingsWrapper>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

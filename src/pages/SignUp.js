@@ -1,126 +1,111 @@
-import React, { useState } from "react";
-import apiClient from "../axiosConfig";
-import {
-  Form,
-  Input,
-  Inputs,
-  Title,
-  Wrapper,
-  Button,
-  StyledButton,
-} from "../components/Common";
+import React, { useState } from 'react'
+import apiClient from '../axiosConfig'
+import { Form, Input, Inputs, Title, Wrapper, Button, StyledButton } from '../components/Common'
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [code, setAuthCode] = useState("");
-  const [pw, setPW] = useState("");
-  const [pwCheck, setPWCheck] = useState("");
-  const [authSent, setAuthSent] = useState(false);
-  const [authVerified, setAuthVerified] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [email, setEmail] = useState('')
+  const [code, setAuthCode] = useState('')
+  const [pw, setPW] = useState('')
+  const [pwCheck, setPWCheck] = useState('')
+  const [authSent, setAuthSent] = useState(false)
+  const [authVerified, setAuthVerified] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const isEmailValid = email !== "";
-  const isCodeValid = code !== "";
+  const isEmailValid = email !== ''
+  const isCodeValid = code !== ''
 
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
+    setEmail(e.target.value)
+  }
 
   const onChangePW = (e) => {
-    setPW(e.target.value);
-  };
+    setPW(e.target.value)
+  }
   const onChangePWCheck = (e) => {
-    setPWCheck(e.target.value);
-  };
+    setPWCheck(e.target.value)
+  }
   const onChangeAuthCode = (e) => {
-    const value = e.target.value;
-    setAuthCode(value !== "" ? parseInt(value, 10) : ""); // 정수로 변환
-  };
+    const value = e.target.value
+    setAuthCode(value !== '' ? parseInt(value, 10) : '') // 정수로 변환
+  }
 
   // 이메일 인증 요청(verification-request) API 처리
   const onClickSendCode = async () => {
     try {
-      const response = await apiClient.post(
-        "/api/members/email/verification-request",
-        {
-          email: email,
-        }
-      );
+      const response = await apiClient.post('/api/members/email/verification-request', {
+        email: email,
+      })
       if (response.data.isSuccess) {
         // 인증 코드 발송 성공
-        setAuthSent(true);
-        setErrorMessage("인증번호가 발송되었습니다.");
+        setAuthSent(true)
+        setErrorMessage('인증번호가 발송되었습니다.')
       } else {
-        setErrorMessage("이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.");
+        setErrorMessage('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.')
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        setErrorMessage("이미 가입된 이메일입니다.");
+        setErrorMessage('이미 가입된 이메일입니다.')
       } else {
-        setErrorMessage("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
+        setErrorMessage('인증번호 발송에 실패했습니다. 다시 시도해 주세요.')
       }
     }
-  };
+  }
 
   // 인증번호 확인(verification) API 처리
   const onClickVerifyCode = async () => {
     try {
-      const response = await apiClient.post("/api/members/email/verification", {
+      const response = await apiClient.post('/api/members/email/verification', {
         email,
         code,
-      });
+      })
 
       if (response.data.isSuccess) {
-        setAuthVerified(true);
-        setErrorMessage("인증이 완료되었습니다.");
+        setAuthVerified(true)
+        setErrorMessage('인증이 완료되었습니다.')
       } else {
-        setErrorMessage("인증번호가 일치하지 않습니다.");
+        setErrorMessage('인증번호가 일치하지 않습니다.')
       }
     } catch (error) {
-      setErrorMessage("인증번호 확인에 실패했습니다. 다시 시도해 주세요.");
+      setErrorMessage('인증번호 확인에 실패했습니다. 다시 시도해 주세요.')
     }
-  };
+  }
 
   // 회원가입(signup) API
   const onClickSignUp = async () => {
     if (pw !== pwCheck) {
-      setErrorMessage("비밀번호가 일치하지 않습니다.");
-      return;
+      setErrorMessage('비밀번호가 일치하지 않습니다.')
+      return
     }
 
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
 
     if (!passwordRegex.test(pw)) {
-      setErrorMessage(
-        "비밀번호는 최소 8자이며, 문자와 숫자를 모두 포함해야 합니다."
-      );
-      return;
+      setErrorMessage('비밀번호는 최소 8자이며, 문자와 숫자를 모두 포함해야 합니다.')
+      return
     }
 
     try {
-      const response = await apiClient.post("/api/members/signup", {
+      const response = await apiClient.post('/api/members/signup', {
         email: email,
         pw: pw,
-        appKey: "yourAppKey",
-        secretKey: "yourSecretKey",
-      });
+        appKey: 'yourAppKey',
+        secretKey: 'yourSecretKey',
+      })
 
       if (response.data.isSuccess) {
-        alert("회원가입을 완료했습니다.");
-        window.location.href = "/";
+        alert('회원가입을 완료했습니다.')
+        window.location.href = '/'
       } else {
-        setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
+        setErrorMessage('회원가입에 실패했습니다. 다시 시도해 주세요.')
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        setErrorMessage("이미 존재하는 회원입니다.");
+        setErrorMessage('이미 존재하는 회원입니다.')
       } else {
-        setErrorMessage(
-          "에러로 인해 회원가입에 실패했습니다. 다시 시도해 주세요."
-        );
+        setErrorMessage('에러로 인해 회원가입에 실패했습니다. 다시 시도해 주세요.')
       }
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -156,12 +141,7 @@ const SignUp = () => {
           )}
         </Inputs>
         <Inputs>
-          <Input
-            placeholder="비밀번호"
-            type="password"
-            value={pw}
-            onChange={onChangePW}
-          />
+          <Input placeholder="비밀번호" type="password" value={pw} onChange={onChangePW} />
           <Input
             placeholder="비밀번호 확인"
             type="password"
@@ -173,9 +153,9 @@ const SignUp = () => {
           </StyledButton>
         </Inputs>
       </Form>
-      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

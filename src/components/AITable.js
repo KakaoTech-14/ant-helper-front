@@ -1,17 +1,12 @@
-import React from "react";
-import {
-  StockTableContainer,
-  Table,
-  TableHeader,
-  TableData,
-} from "./StockTable";
+import React from 'react'
+import { StockTableContainer, Table, TableHeader, TableData } from './StockTable'
 
 const AITable = () => {
   // 가짜 데이터
   const mockData = [
     {
       rank: 1,
-      name: "테슬라",
+      name: '테슬라',
       price: 4465, // 가격
       change: 825, // 변동 금액
       changePercentage: 22.6, // 변동 퍼센트
@@ -20,7 +15,7 @@ const AITable = () => {
     },
     {
       rank: 2,
-      name: "신풍제약",
+      name: '신풍제약',
       price: 18210,
       change: 2380,
       changePercentage: 15.0,
@@ -29,7 +24,7 @@ const AITable = () => {
     },
     {
       rank: 3,
-      name: "씨젠",
+      name: '씨젠',
       price: 73700,
       change: -4600,
       changePercentage: -5.8,
@@ -38,14 +33,14 @@ const AITable = () => {
     },
     {
       rank: 4,
-      name: "셀트리온",
+      name: '셀트리온',
       price: 12550,
       change: 2300,
       changePercentage: 22.4,
       volume: 670000000,
       amount: 53086,
     },
-  ];
+  ]
 
   return (
     <StockTableContainer>
@@ -65,7 +60,7 @@ const AITable = () => {
               <TableData>{item.name}</TableData>
               <TableData>{item.price.toLocaleString()}원</TableData>
               <TableData change={item.change}>
-                {item.change > 0 ? "+" : ""}
+                {item.change > 0 ? '+' : ''}
                 {item.change.toLocaleString()}원 ({item.changePercentage}%)
               </TableData>
             </tr>
@@ -73,7 +68,7 @@ const AITable = () => {
         </tbody>
       </Table>
     </StockTableContainer>
-  );
-};
+  )
+}
 
-export default AITable;
+export default AITable
