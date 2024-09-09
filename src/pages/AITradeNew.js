@@ -12,15 +12,30 @@ const AITradeNew = () => {
 
   //AI추천종목 불러오기
   useEffect(() => {
-    apiClient
-      .get('/api/stocks/recommendations', {
-        params: {
-          size: 10,
-          page: 0,
-        },
-      })
-      .then((response) => setRecommendations(response.data.data))
-      .catch((error) => console.error('Error at "/api/stocks/recommendations"', error));
+    const fetchRecommendationsWithPrices = async () => {
+      try {
+        const response = await apiClient.get('/api/stocks/recommendations', {
+          params: {
+            size: 10,
+            page: 0,
+          },
+        });
+
+        if (response.data.isSuccess) {
+          const recommendationsWithPrices = await Promise.all(
+            response.data.data.map(async (stock) => {
+              const price = await fetchPrice(stock.productNumber);
+              return { ...stock, price };
+            }),
+          );
+          setRecommendations(recommendationsWithPrices);
+        }
+      } catch (error) {
+        console.error('Error at "/api/stocks/recommendations"', error);
+      }
+    };
+
+    fetchRecommendationsWithPrices();
   }, []);
 
   const fetchPrice = async (productNumber) => {
@@ -92,9 +107,13 @@ const AITradeNew = () => {
           <ScrollArea>
             {selectedStocks.map((stock, index) => (
               <TradeItem key={index}>
-                <div>{stock.name}</div>
                 <div>
-                  {stock.price}
+                  {stock.name}{' '}
+                  <span style={{ marginLeft: '10px' }}>
+                    {stock.price ? `${stock.price}원` : 'N/A'}
+                  </span>
+                </div>
+                <div>
                   <ActionButton onClick={() => handleRemoveStock(stock)}>-</ActionButton>
                 </div>
               </TradeItem>
