@@ -22,8 +22,28 @@ const AITradeNew = () => {
       .then((response) => setRecommendations(response.data.data))
       .catch((error) => console.error('Error at "/api/stocks/recommendations"', error));
   }, []);
-  const handleAddStock = (stock) => {
-    setSelectedStocks([...selectedStocks, stock]);
+
+  const fetchPrice = async (productNumber) => {
+    try {
+      const response = await apiClient.get('/api/stocks/price', {
+        params: { productNumber },
+      });
+
+      if (response.data.isSuccess && response.data.data) {
+        return response.data.data.output.stck_prpr;
+      } else {
+        return 'N/A';
+      }
+    } catch (error) {
+      console.error(`가격 정보를 가져오는 중 오류 발생: ${productNumber}`, error);
+      return 'N/A';
+    }
+  };
+
+  const handleAddStock = async (stock) => {
+    const price = await fetchPrice(stock.productNumber);
+    const stockWithPrice = { ...stock, price };
+    setSelectedStocks([...selectedStocks, stockWithPrice]);
     setRecommendations(recommendations.filter((item) => item.name !== stock.name));
   };
 
@@ -31,6 +51,7 @@ const AITradeNew = () => {
     setSelectedStocks(selectedStocks.filter((item) => item.name !== stock.name));
     setRecommendations([...recommendations, stock]);
   };
+
   const handleNextClick = () => {
     setIsModalOpen(true);
     window.history.pushState(null, null, 'ai-trade/next');
@@ -51,9 +72,13 @@ const AITradeNew = () => {
           <ScrollArea>
             {recommendations.map((stock, index) => (
               <StockItem key={index}>
-                <div>{stock.name}</div>
                 <div>
-                  {stock.price}
+                  {stock.name}
+                  <span style={{ marginLeft: '10px' }}>
+                    {stock.price ? `${stock.price}원` : 'N/A'}
+                  </span>
+                </div>
+                <div>
                   <ActionButton onClick={() => handleAddStock(stock)}>담기</ActionButton>
                 </div>
               </StockItem>
