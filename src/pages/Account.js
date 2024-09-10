@@ -1,12 +1,16 @@
 import React from 'react';
 
 import NavBar from '../components/NavBar';
-import { Wrapper } from '../components/Common';
+import { Body, Wrapper } from '../components/Common';
+import Sidebar from '../components/Sidebar/Sidebar';
 
 const Account = () => {
   return (
     <Wrapper>
-      <NavBar />내 계좌
+      <NavBar />
+      <div className={'w-full'}>
+        <Sidebar />
+      </div>
     </Wrapper>
   );
 };
