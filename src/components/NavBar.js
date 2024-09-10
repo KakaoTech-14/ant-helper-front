@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { ReactComponent as NotificationIcon } from '../assets/icons/notifications.svg';
 import { ReactComponent as AccountIcon } from '../assets/icons/account_circle.svg';
 import Search from './Search';
+import AntHelper_logo from '../assets/icons/AntHelper_logo.svg';
 
 const NavBar = () => {
   const { signedIn, userInfo, logout } = useAuth();
@@ -29,7 +30,10 @@ const NavBar = () => {
   return (
     <Wrapper>
       <NavBarContainer>
-        <Logo href={'/'}>Ant Helper</Logo>
+        <Logo href={'/'}>
+          {' '}
+          <img src={AntHelper_logo}></img> Ant Helper
+        </Logo>
         <NavLinks>
           <Link to="/">홈</Link>
           <Link to="/account">내 계좌</Link>
@@ -87,6 +91,7 @@ const NavBarContainer = styled.nav`
 `;
 
 const Logo = styled.a`
+  display: inline-flex;
   font-size: 24px;
   font-weight: bold;
 `;
@@ -103,12 +108,6 @@ const NavLinks = styled.div`
     font-weight: 500;
   }
 `;
-
-// const SearchBar = styled.input`
-//   padding: 8px;
-//   border-radius: 20px;
-//   border: 1px solid #ddd;
-// `;
 
 const UserMenu = styled.div`
   display: flex;
