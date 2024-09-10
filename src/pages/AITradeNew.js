@@ -131,15 +131,28 @@ const AITradeNew = () => {
         transactionItems,
       };
 
-      const response = await apiClient.post('/api/transactions', orderRequest);
+      const transactionResponse = await apiClient.post('/api/transactions', orderRequest);
 
-      if (response.data.isSuccess) {
-        alert('거래가 성공적으로 완료되었습니다.');
-        setIsModalOpen(false);
-        // TODO: 거래 완료 후 UI 처리 더 필요?
-        window.location.href = '/';
+      if (transactionResponse.data.isSuccess) {
+        // 거래 성공했을 시, AI거래 상태를 ON으로 변경
+        try {
+          const autoTradeResponse = await apiClient.patch('/api/members/autotrades', {
+            autoTradeState: 'ON', // params 대신 body로 보내도록 수정
+          });
+
+          if (autoTradeResponse.data.isSuccess) {
+            alert('거래가 성공적으로 완료되었습니다.');
+            setIsModalOpen(false);
+            window.location.href = '/';
+          } else {
+            throw new Error('자동 거래 상태 변경 실패');
+          }
+        } catch (error) {
+          console.error('AI 거래 상태 변경 중 오류 발생:', error);
+          alert('AI 거래 상태 변경에 실패했습니다.');
+        }
       } else {
-        alert('거래 실패: ' + response.data.message);
+        alert('거래 실패: ' + transactionResponse.data.message);
       }
     } catch (error) {
       console.error('주문 처리 중 오류 발생:', error);
