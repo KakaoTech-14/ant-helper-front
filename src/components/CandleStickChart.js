@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import axiosClient from '../axiosConfig';
+import apiClient from '../axiosConfig';
 import { ButtonGroupItem } from './Common';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -30,15 +30,12 @@ const CandlestickChart = ({ productNumber }) => {
     // API 호출 함수
     const fetchStockData = async () => {
       try {
-        const response = await axiosClient.get(
-          'https://api.ant-helper.com/api/stocks/price-chart',
-          {
-            params: {
-              productNumber: productNumber,
-              periodCode: periodCode,
-            },
+        const response = await apiClient.get('/api/stocks/price-chart', {
+          params: {
+            productNumber: productNumber,
+            periodCode: periodCode,
           },
-        );
+        });
 
         if (response.data.isSuccess) {
           let stockData = response.data.data.output2;
