@@ -27,8 +27,8 @@ const Transactions = () => {
       <table className="min-w-full bg-white">
         <thead>
           <tr className="text-center">
-            <th className="py-2 px-4 border-b">날짜</th>
-            <th className="py-2 px-4 border-b">시간</th>
+            {/* <th className="py-2 px-4 border-b">날짜</th>
+            <th className="py-2 px-4 border-b">시간</th> */}
             <th className="py-2 px-4 border-b">종목명</th>
             <th className="py-2 px-4 border-b">매입가</th>
             <th className="py-2 px-4 border-b">보유수량</th>
@@ -37,9 +37,8 @@ const Transactions = () => {
         <tbody>
           {transactions.map((transaction, index) => (
             <tr key={index} className="text-center border-t">
-              <td className="py-2">{new Date().toLocaleDateString()}</td> {/* 임시 날짜 */}
-              <td className="py-2">{new Date().toLocaleTimeString().slice(0, 5)}</td>{' '}
-              {/* 임시 시간 */}
+              {/* <td className="py-2">{new Date().toLocaleDateString()}</td>
+              <td className="py-2">{new Date().toLocaleTimeString().slice(0, 5)}</td>{' '} */}
               <td className="py-2">{transaction.prdt_name}</td>
               <td className="py-2">{Number(transaction.pchs_avg_pric).toLocaleString()}원</td>
               <td className="py-2">{transaction.hldg_qty}주</td>
