@@ -41,7 +41,7 @@ const StockItem = ({ productNumber, defaultName, watchListId, industry, isWatchT
     // 풀링: 5초마다 데이터를 가져옴
     const intervalId = setInterval(() => {
       fetchStockData();
-    }, 5000);
+    }, 1000);
 
     return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 정리
   }, [productNumber, defaultName]);
