@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../axiosConfig';
+import StockItem from './StockItem';
 import { StockTableContainer, Table, TableHeader, TableData } from './StockTable';
 
 const AITable = () => {
@@ -15,11 +16,11 @@ const AITable = () => {
           },
         });
 
-        if (response.data.isSuccess && response.data.data) {
+        if (response.data.isSuccess) {
           setAIRecommendations(response.data.data);
         }
       } catch (error) {
-        console.error('AITable에서 AI 추천종목을 가져오는 중 오류 발생', error);
+        console.error('AI 추천종목을 가져오는 중 오류 발생', error);
       }
     };
 
@@ -31,7 +32,7 @@ const AITable = () => {
       <Table>
         <thead>
           <tr>
-            <TableHeader>순위</TableHeader>
+            <TableHeader style={{ width: '50px' }}>순위</TableHeader>
             <TableHeader>종목</TableHeader>
             <TableHeader>현재가</TableHeader>
             <TableHeader>등락률</TableHeader>
@@ -39,18 +40,14 @@ const AITable = () => {
         </thead>
         <tbody>
           {aiRecommendations.map((item, index) => (
-            <tr key={index}>
-              <TableData>{index + 1}</TableData> {/* 순위를 표시 */}
-              <TableData>{item.name}</TableData> {/* 종목명 */}
-              <TableData>{item.price ? item.price.toLocaleString() + '원' : 'N/A'}</TableData>{' '}
-              {/* 현재가 */}
-              <TableData change={item.change}>
-                {item.change > 0 ? '+' : ''}
-                {item.change
-                  ? `${item.change.toLocaleString()}원 (${item.changePercentage}%)`
-                  : 'N/A'}
-              </TableData>
-            </tr>
+            <StockItem
+              rank={index + 1} // 순위 전달
+              key={item.productNumber}
+              productNumber={item.productNumber}
+              defaultName={item.name}
+              industry={item.industry}
+              isWatchTable={false} // WatchTable이 아닌 경우
+            />
           ))}
         </tbody>
       </Table>
