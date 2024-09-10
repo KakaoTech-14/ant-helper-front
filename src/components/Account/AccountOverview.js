@@ -24,12 +24,13 @@ const AccountOverview = () => {
   }, []);
 
   if (!balanceData) {
-    return <div margin="10 10">거래 중인 주식이 없습니다.</div>;
+    return <div>거래 중인 주식이 없습니다.</div>;
   }
 
   // 총 손익 및 총 매입 관련 정보
   const totalProfit = balanceData.output2[0].evlu_pfls_smtl_amt;
   const totalPurchase = balanceData.output2[0].pchs_amt_smtl_amt;
+  const isNegativeRate = Number(totalProfit) < 0;
 
   return (
     <div className="p-4">
@@ -39,8 +40,8 @@ const AccountOverview = () => {
       <div className="my-4">
         <div className="flex space-x-[20px]">
           <span>총 손익</span>
-          <span className="text-red-500">
-            {totalProfit}원 {/* 손익 표시 */}
+          <span className={`${isNegativeRate ? 'text-blue-500' : 'text-red-500'}`}>
+            {Number(totalProfit).toFixed(2)}원 {/* 손익 표시 */}
           </span>
         </div>
         <div className="flex space-x-[20px]">
@@ -54,26 +55,39 @@ const AccountOverview = () => {
       {/* 종목별 리스트 */}
       <table className="min-w-full bg-white">
         <thead>
-          <tr>
+          <tr className="text-center">
             <th className="py-2">종목명</th>
-            <th className="py-2">매입가</th>
             <th className="py-2">보유수량</th>
-            <th className="py-2">평가손익</th>
+            <th className="py-2">매입가</th>
             <th className="py-2">현재가</th>
+            <th className="py-2">평가손익</th>
             <th className="py-2">수익률</th>
           </tr>
         </thead>
         <tbody>
-          {balanceData.output1.map((stock, index) => (
-            <tr key={index} className="border-t">
-              <td className="py-2">{stock.prdt_name}</td>
-              <td className="py-2">{Number(stock.pchs_avg_pric).toLocaleString()}원</td>
-              <td className="py-2">{stock.hldg_qty}주</td>
-              <td className="py-2">{Number(stock.evlu_pfls_amt).toLocaleString()}원</td>
-              <td className="py-2">{Number(stock.prpr).toLocaleString()}원</td>
-              <td className="py-2">{Number(stock.evlu_erng_rt).toFixed(2)}%</td>
-            </tr>
-          ))}
+          {balanceData.output1.map((stock, index) => {
+            const isNegativeProfit = Number(stock.evlu_pfls_amt) < 0;
+            const isNegativeRate = Number(stock.evlu_erng_rt) < 0;
+
+            return (
+              <tr key={index} className="text-center border-t">
+                <td className="py-2">{stock.prdt_name}</td>
+                <td className="py-2">{stock.hldg_qty}주</td>
+                <td className="py-2">{Number(stock.pchs_avg_pric).toLocaleString()}원</td>
+                <td className="py-2">{Number(stock.prpr).toLocaleString()}원</td>
+
+                {/* 평가손익 */}
+                <td className={`py-2 ${isNegativeProfit ? 'text-blue-500' : 'text-red-500'}`}>
+                  {Number(stock.evlu_pfls_amt).toLocaleString()}원
+                </td>
+
+                {/* 수익률 */}
+                <td className={`py-2 ${isNegativeRate ? 'text-blue-500' : 'text-red-500'}`}>
+                  {Number(stock.evlu_erng_rt).toFixed(2)}%
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -127,8 +127,8 @@ const AITradeNew = () => {
       }));
 
       const orderRequest = {
-        amount: capital, // 자본금
-        transactionItems, // 거래할 종목들
+        amount: capital,
+        transactionItems,
       };
 
       const response = await apiClient.post('/api/transactions', orderRequest);
