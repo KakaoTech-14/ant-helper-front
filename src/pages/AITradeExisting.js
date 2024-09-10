@@ -1,15 +1,32 @@
 import { useEffect, useState } from 'react';
 import apiClient from '../axiosConfig';
-import styled from 'styled-components';
+import {
+  Wrapper,
+  Container,
+  StockHeader,
+  Recommendations,
+  SelectedList,
+  ScrollArea,
+  TradeItem,
+  CapitalInput,
+  Footer,
+  Disclaimer,
+  CloseButton,
+  ModalFooter,
+  ActionButton,
+} from '../components/TradeStyles';
 import NavBar from '../components/NavBar';
+import Modal from '../components/Modal';
 
 const AITradeExisting = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
+  const [capital, setCapital] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // AI 추천 종목 불러오기
+  //AI추천종목 불러오기
   useEffect(() => {
-    const fetchRecommendations = async () => {
+    const fetchRecommendationsWithPrices = async () => {
       try {
         const response = await apiClient.get('/api/stocks/recommendations', {
           params: {
@@ -17,13 +34,22 @@ const AITradeExisting = () => {
             page: 0,
           },
         });
-        setRecommendations(response.data.data);
+
+        if (response.data.isSuccess) {
+          const recommendationsWithPrices = await Promise.all(
+            response.data.data.map(async (stock) => {
+              const price = await fetchPrice(stock.productNumber);
+              return { ...stock, price };
+            }),
+          );
+          setRecommendations(recommendationsWithPrices);
+        }
       } catch (error) {
         console.error('Error at "/api/stocks/recommendations"', error);
       }
     };
 
-    fetchRecommendations();
+    fetchRecommendationsWithPrices();
   }, []);
 
   // 담은 주식 불러오기
@@ -44,10 +70,50 @@ const AITradeExisting = () => {
     fetchSelectedStocks();
   }, []);
 
+  const fetchPrice = async (productNumber) => {
+    try {
+      const response = await apiClient.get('/api/stocks/price', {
+        params: { productNumber },
+      });
+
+      if (response.data.isSuccess) {
+        return response.data.data.output.stck_prpr;
+      } else {
+        return 'N/A';
+      }
+    } catch (error) {
+      console.error(`가격 정보를 가져오는 중 오류 발생: ${productNumber}`, error);
+      return 'N/A';
+    }
+  };
+
   // 종목 담기
-  const handleAddStock = (stock) => {
-    setSelectedStocks([...selectedStocks, stock]);
-    setRecommendations(recommendations.filter((item) => item.name !== stock.name));
+  const handleAddStock = async (stock) => {
+    try {
+      const response = await apiClient.get('/api/stocks/price', {
+        params: { productNumber: stock.productNumber },
+      });
+
+      if (response.data.isSuccess) {
+        // 필요한 정보만 추출하자
+        const stockWithInfo = {
+          productNumber: stock.productNumber,
+          name: response.data.data.output.name,
+          industry: response.data.data.output.bstp_kor_isnm,
+          price: response.data.data.output.stck_prpr,
+        };
+
+        // selectedStocks에 주식 추가
+        setSelectedStocks([...selectedStocks, stockWithInfo]);
+
+        // recommendations에서 해당 주식 제거
+        setRecommendations(
+          recommendations.filter((item) => item.productNumber !== stock.productNumber),
+        );
+      }
+    } catch (error) {
+      console.error(`가격 정보를 가져오는 중 오류 발생: ${stock.productNumber}`, error);
+    }
   };
 
   // 종목 삭제
@@ -56,98 +122,123 @@ const AITradeExisting = () => {
     setRecommendations([...recommendations, stock]);
   };
 
+  const handleNextClick = () => {
+    const maxStockPrice = 100000;
+    if (capital >= maxStockPrice && selectedStocks.length >= 3) {
+      setIsModalOpen(true);
+      window.history.pushState(null, null, 'ai-trade/next');
+    } else {
+      alert(`자본금은 100,000원 이상, 담은 주식은 3개 이상이어야 합니다. 다시 한번 확인해 주세요.`);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    window.history.back();
+  };
+
+  // TODO:주문 변경 API 호출하도록 반드시 변경
+  const handleOrder = async () => {
+    try {
+      const transactionItems = selectedStocks.map((stock) => ({
+        productNumber: stock.productNumber,
+        name: stock.name,
+        industry: stock.industry,
+      }));
+
+      const orderRequest = {
+        amount: capital,
+        transactionItems,
+      };
+
+      const response = await apiClient.post('/api/transactions', orderRequest);
+
+      if (response.data.isSuccess) {
+        alert('거래가 성공적으로 완료되었습니다.');
+        setIsModalOpen(false);
+        // TODO: 거래 완료 후 UI 처리 더 필요?
+        window.location.href = '/';
+      } else {
+        alert('거래 실패: ' + response.data.message);
+      }
+    } catch (error) {
+      console.error('주문 처리 중 오류 발생:', error);
+      alert('거래 도중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <Wrapper>
       <NavBar />
       <Container>
         {/* AI 추천 종목 */}
         <Recommendations>
-          <div>AI 추천종목</div>
+          <StockHeader>AI 추천종목</StockHeader>
           <ScrollArea>
             {recommendations.map((stock, index) => (
-              <StockItem key={index}>
-                <div>{stock.name}</div>
+              <TradeItem key={index}>
                 <div>
-                  {stock.price}
-                  <button onClick={() => handleAddStock(stock)}>담기</button>
+                  {stock.name}
+                  <span style={{ marginLeft: '10px' }}>
+                    {stock.price ? `${stock.price}원` : 'N/A'}
+                  </span>
                 </div>
-              </StockItem>
+                <div>
+                  <ActionButton onClick={() => handleAddStock(stock)}>담기</ActionButton>
+                </div>
+              </TradeItem>
             ))}
           </ScrollArea>
         </Recommendations>
 
-        {/* 담은 주식 */}
+        {/* 담은 주식과 자본금 */}
         <SelectedList>
-          <div>담은 주식</div>
+          <StockHeader>거래 중인 주식</StockHeader>
           <ScrollArea>
             {selectedStocks.map((stock, index) => (
-              <StockItem key={index}>
-                <div>{stock.name}</div>
+              <TradeItem key={index}>
                 <div>
-                  {stock.price}
-                  <button onClick={() => handleRemoveStock(stock)}>-</button>
+                  {stock.name}{' '}
+                  <span style={{ marginLeft: '10px' }}>
+                    {stock.price ? `${stock.price}원` : 'N/A'}
+                  </span>
                 </div>
-              </StockItem>
+                <div>
+                  <ActionButton onClick={() => handleRemoveStock(stock)}>-</ActionButton>
+                </div>
+              </TradeItem>
             ))}
           </ScrollArea>
+          <CapitalInput>
+            <label>자본금 입력: </label>
+            <input
+              type="number"
+              value={capital}
+              onChange={(e) => setCapital(e.target.value)}
+              placeholder="자본금을 입력하세요"
+            />
+          </CapitalInput>
           <Footer>
             <div>{selectedStocks.length} / 10</div>
-            <button>다음</button>
+            <ActionButton onClick={handleNextClick}>다음</ActionButton>
           </Footer>
         </SelectedList>
+        {/* 모달 창 */}
+        {isModalOpen && (
+          <Modal onClose={handleCloseModal}>
+            <Disclaimer>
+              <CloseButton onClick={handleCloseModal}>이전</CloseButton>
+              <p>면책 조항</p>
+              <p>이대로 거래를 진행하시겠습니까?</p>
+              <ModalFooter>
+                <ActionButton onClick={handleOrder}>AI 거래 시작</ActionButton>
+              </ModalFooter>
+            </Disclaimer>
+          </Modal>
+        )}
       </Container>
     </Wrapper>
   );
 };
 
 export default AITradeExisting;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Container = styled.div`
-  display: flex;
-  margin-top: 40px;
-  justify-content: space-evenly;
-`;
-
-const Recommendations = styled.div`
-  width: 40%;
-  padding: 10px;
-  margin: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-`;
-
-const SelectedList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-  min-height: 300px;
-  padding: 10px;
-  margin: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-`;
-
-const ScrollArea = styled.div`
-  max-height: 400px;
-  overflow-y: auto;
-`;
-
-const StockItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding: 10px 0;
-`;
