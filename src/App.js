@@ -8,9 +8,8 @@ import SignUp from './pages/SignUp';
 import Account from './pages/Account';
 import AITrade from './pages/AITrade';
 import Settings from './pages/Settings';
-
-import './App.css';
 import StockDetailsInformation from './pages/StockDetailsInformation';
+import './App.css';
 
 function App() {
   return (
@@ -21,7 +20,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route
-            path="/account"
+            path="/account/*"
             element={
               <ProtectedRoute>
                 <Account />
@@ -29,7 +28,7 @@ function App() {
             }
           />
           <Route
-            path="/ai-trade"
+            path="/ai-trade/*"
             element={
               <ProtectedRoute>
                 <AITradeProvider>
