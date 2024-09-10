@@ -1,6 +1,20 @@
 import { useEffect, useState } from 'react';
 import apiClient from '../axiosConfig';
-import styled from 'styled-components';
+import {
+  Wrapper,
+  Container,
+  StockHeader,
+  Recommendations,
+  SelectedList,
+  ScrollArea,
+  TradeItem,
+  CapitalInput,
+  Footer,
+  Disclaimer,
+  CloseButton,
+  ModalFooter,
+  ActionButton,
+} from '../components/TradeStyles';
 import NavBar from '../components/NavBar';
 import Modal from '../components/Modal';
 
@@ -56,10 +70,31 @@ const AITradeNew = () => {
   };
 
   const handleAddStock = async (stock) => {
-    const price = await fetchPrice(stock.productNumber);
-    const stockWithPrice = { ...stock, price };
-    setSelectedStocks([...selectedStocks, stockWithPrice]);
-    setRecommendations(recommendations.filter((item) => item.name !== stock.name));
+    try {
+      const response = await apiClient.get('/api/stocks/price', {
+        params: { productNumber: stock.productNumber },
+      });
+
+      if (response.data.isSuccess) {
+        // 필요한 정보만 추출하자
+        const stockWithInfo = {
+          productNumber: stock.productNumber,
+          name: response.data.data.output.name,
+          industry: response.data.data.output.bstp_kor_isnm,
+          price: response.data.data.output.stck_prpr,
+        };
+
+        // selectedStocks에 주식 추가
+        setSelectedStocks([...selectedStocks, stockWithInfo]);
+
+        // recommendations에서 해당 주식 제거
+        setRecommendations(
+          recommendations.filter((item) => item.productNumber !== stock.productNumber),
+        );
+      }
+    } catch (error) {
+      console.error(`가격 정보를 가져오는 중 오류 발생: ${stock.productNumber}`, error);
+    }
   };
 
   const handleRemoveStock = (stock) => {
@@ -68,13 +103,48 @@ const AITradeNew = () => {
   };
 
   const handleNextClick = () => {
-    setIsModalOpen(true);
-    window.history.pushState(null, null, 'ai-trade/next');
+    const maxStockPrice = 100000;
+    if (capital >= maxStockPrice && selectedStocks.length >= 3) {
+      setIsModalOpen(true);
+      window.history.pushState(null, null, 'ai-trade/next');
+    } else {
+      alert(`자본금은 100,000원 이상, 담은 주식은 3개 이상이어야 합니다. 다시 한번 확인해 주세요.`);
+    }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     window.history.back();
+  };
+
+  // 주문 API 호출
+  const handleOrder = async () => {
+    try {
+      const transactionItems = selectedStocks.map((stock) => ({
+        productNumber: stock.productNumber,
+        name: stock.name,
+        industry: stock.industry,
+      }));
+
+      const orderRequest = {
+        amount: capital, // 자본금
+        transactionItems, // 거래할 종목들
+      };
+
+      const response = await apiClient.post('/api/transactions', orderRequest);
+
+      if (response.data.isSuccess) {
+        alert('거래가 성공적으로 완료되었습니다.');
+        setIsModalOpen(false);
+        // TODO: 거래 완료 후 UI 처리 더 필요?
+        window.location.href = '/';
+      } else {
+        alert('거래 실패: ' + response.data.message);
+      }
+    } catch (error) {
+      console.error('주문 처리 중 오류 발생:', error);
+      alert('거래 도중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -138,10 +208,10 @@ const AITradeNew = () => {
           <Modal onClose={handleCloseModal}>
             <Disclaimer>
               <CloseButton onClick={handleCloseModal}>이전</CloseButton>
-              <h2>면책 조항</h2>
+              <p>면책 조항</p>
               <p>이대로 거래를 진행하시겠습니까?</p>
               <ModalFooter>
-                <ActionButton>AI 거래 시작</ActionButton>
+                <ActionButton onClick={handleOrder}>AI 거래 시작</ActionButton>
               </ModalFooter>
             </Disclaimer>
           </Modal>
@@ -152,98 +222,3 @@ const AITradeNew = () => {
 };
 
 export default AITradeNew;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Container = styled.div`
-  display: flex;
-  margin-top: 40px;
-  justify-content: space-evenly;
-`;
-
-const StockHeader = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Recommendations = styled.div`
-  width: 40%;
-  max-width: 500px;
-  padding: 10px;
-  margin: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-`;
-
-const SelectedList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-  max-width: 500px;
-  min-height: 300px;
-  padding: 10px;
-  margin: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-`;
-
-const ScrollArea = styled.div`
-  max-height: 400px; // 필요에 따라 조정 가능
-  overflow-y: auto;
-`;
-
-const TradeItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const CapitalInput = styled.div`
-  input {
-    padding: 5px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  margin-bottom: 20px;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding: 10px 0;
-`;
-
-const Disclaimer = styled.div`
-  text-align: center;
-  padding: 20px;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  font-size: 20px;
-  cursor: pointer;
-`;
-
-const ModalFooter = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-`;
-
-const ActionButton = styled.button`
-  padding: 5px 10px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
