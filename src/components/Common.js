@@ -12,6 +12,18 @@ export const Wrapper = styled.div`
   overflow-x: hidden;
 `;
 
+export const Body = styled.div`
+  width: 60%;
+`;
+
+export const StyledSearchBar = styled.input`
+  padding: 8px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  font-size: 16px;
+`;
+
 export const Form = styled.div`
   display: block;
   height: 100%;
@@ -54,6 +66,7 @@ export const Button = styled.button`
   padding: 10px;
   border-radius: 5px;
 `;
+
 export const StyledButton = styled(Button)`
   background-color: ${(props) => (props.disabled ? '#d3d3d3' : 'black')};
   cursor: ${(props) => (props.disabled ? 'disabled' : 'pointer')};
@@ -61,9 +74,6 @@ export const StyledButton = styled(Button)`
   &:hover {
     background-color: ${(props) => (props.disabled ? '#d3d3d3' : 'black')};
   }
-`;
-export const Body = styled.div`
-  width: 60%;
 `;
 
 export const ButtonGroupItem = ({ text, onClick, isClicked }) => {
@@ -76,11 +86,3 @@ export const ButtonGroupItem = ({ text, onClick, isClicked }) => {
     </button>
   );
 };
-
-export const StyledSearchBar = styled.input`
-  padding: 8px;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  font-size: 16px;
-`;
