@@ -11,30 +11,30 @@ const StockItem = ({ productNumber, defaultName, watchListId, industry, isWatchT
     changePercentage: null,
   });
 
-  // 데이터를 가져오는 함수
-  const fetchStockData = async () => {
-    try {
-      const response = await apiClient.get(`/api/stocks/price`, {
-        params: { productNumber },
-      });
-
-      if (response.data.isSuccess) {
-        const { stck_prpr, prdy_vrss, prdy_ctrt } = response.data.data.output;
-        setStockData({
-          itemName: defaultName || '(추가예정)',
-          currentPrice: stck_prpr,
-          change: prdy_vrss,
-          changePercentage: prdy_ctrt,
-        });
-      } else {
-        console.error(`서버에서 실패 응답을 받았습니다: ${response.data}`);
-      }
-    } catch (error) {
-      console.error(`가격 정보를 가져오는 중 오류 발생: ${productNumber}`, error);
-    }
-  };
-
   useEffect(() => {
+    // 데이터를 가져오는 함수
+    const fetchStockData = async () => {
+      try {
+        const response = await apiClient.get(`/api/stocks/price`, {
+          params: { productNumber },
+        });
+
+        if (response.data.isSuccess) {
+          const { stck_prpr, prdy_vrss, prdy_ctrt } = response.data.data.output;
+          setStockData({
+            itemName: defaultName || '(추가예정)',
+            currentPrice: stck_prpr,
+            change: prdy_vrss,
+            changePercentage: prdy_ctrt,
+          });
+        } else {
+          console.error(`서버에서 실패 응답을 받았습니다: ${response.data}`);
+        }
+      } catch (error) {
+        console.error(`가격 정보를 가져오는 중 오류 발생: ${productNumber}`, error);
+      }
+    };
+
     // 첫 데이터 로드한 후
     fetchStockData();
 
