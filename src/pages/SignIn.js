@@ -5,6 +5,15 @@ import { styled } from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+const CustomLink = styled(Link)`
+  margin: 10px;
+  color: black;
+  &:visited {
+    color: grey;
+    text-decoration: none;
+  }
+`;
+
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [pw, setPW] = useState('');
@@ -80,12 +89,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-const CustomLink = styled(Link)`
-  margin: 10px;
-  color: black;
-  &:visited {
-    color: grey;
-    text-decoration: none;
-  }
-`;
