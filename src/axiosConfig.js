@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
   },
 );
 
-// 응답에서 402: Access Token을 재발급받고 원래 요청을 다시 시도
+// 응답에서 401: Access Token을 재발급받고 원래 요청을 다시 시도
 apiClient.interceptors.response.use(
   (response) => {
     return response;
@@ -31,8 +31,9 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     const refreshToken = localStorage.getItem('refreshToken');
 
-    // 402: Access Token 재발급 로직 실행
-    if (error.response.status === 402 && !originalRequest._retry) {
+    // 401: Access Token 재발급 로직 실행
+    // 401 Unauthrized 체크, 또한 originalRequest로 재발급 시도의 무한루프 방지
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       console.log('AccessToken 재발급 로직 실행');
 
