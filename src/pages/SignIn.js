@@ -39,15 +39,11 @@ const SignIn = () => {
       formData.append('email', email);
       formData.append('pw', pw);
 
-      const response = await apiClient.post(
-        'https://api.ant-helper.com/api/members/login',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      const response = await apiClient.post('/api/members/login', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
 
       const { accessToken, refreshToken } = response.data.data;
 
