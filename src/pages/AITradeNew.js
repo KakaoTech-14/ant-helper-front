@@ -149,7 +149,7 @@ const AITradeNew = () => {
           }
         } catch (error) {
           console.error('AI 거래 상태 변경 중 오류 발생:', error);
-          alert('AI 거래 상태 변경에 실패했습니다.');
+          //alert('AI 거래 상태 변경에 실패했습니다.');
         }
       } else {
         alert('거래 실패: ' + transactionResponse.data.message);
