@@ -8,7 +8,7 @@ const apiClient = axios.create({
   },
 });
 
-// 요청을 보내기 전에 인터셉트해서, Authorization 헤더에 Access Token 자동추가
+// 요청 보내기 전 인터셉트해서 Authorization 헤더에 Access Token 자동추가
 apiClient.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('accessToken');
@@ -31,11 +31,10 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     const refreshToken = localStorage.getItem('refreshToken');
 
-    // 401: Access Token 재발급 로직 실행
-    // 401 Unauthrized 체크, 또한 originalRequest로 재발급 시도의 무한루프 방지
+    // Access Token 재발급 로직 실행해야함
+    // 401 Unauthrized 체크 & originalRequest로 재발급 시도의 무한루프 방지
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      console.log('AccessToken 재발급 로직 실행');
 
       try {
         const response = await axios.post(
