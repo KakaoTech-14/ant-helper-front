@@ -152,11 +152,11 @@ const AITradeNew = () => {
           //alert('AI 거래 상태 변경에 실패했습니다.');
         }
       } else {
-        alert('거래 실패: ' + transactionResponse.data.message);
+        //alert('거래 실패: ' + transactionResponse.data.message);
       }
     } catch (error) {
       console.error('주문 처리 중 오류 발생:', error);
-      alert('거래 도중 오류가 발생했습니다.');
+      //alert('거래 도중 오류가 발생했습니다.');
     }
   };
 
