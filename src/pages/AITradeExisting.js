@@ -163,7 +163,7 @@ const AITradeExisting = () => {
       }
     } catch (error) {
       console.error('주문 처리 중 오류 발생:', error);
-      //alert('거래 도중 오류가 발생했습니다.');
+      alert('거래 도중 오류가 발생했습니다.');
     }
   };
 
