@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuth } from './contexts/AuthContext';
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
@@ -28,8 +29,14 @@ apiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const { signedIn } = useAuth();
     const originalRequest = error.config;
     const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!signedIn) {
+      window.location.href = '/signin';
+      return Promise.reject(error);
+    }
 
     // Access Token 재발급 로직 실행해야함
     // 401 Unauthrized 체크 & originalRequest로 재발급 시도의 무한루프 방지
