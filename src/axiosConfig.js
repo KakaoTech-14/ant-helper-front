@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuth } from './contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
@@ -30,17 +31,18 @@ apiClient.interceptors.response.use(
   },
   async (error) => {
     const { signedIn } = useAuth();
+    const navigate = useNavigate();
     const originalRequest = error.config;
     const refreshToken = localStorage.getItem('refreshToken');
 
     // 로그아웃 상태일 경우 바로 로그인 페이지로 리다이렉트
     if (!signedIn) {
-      window.location.href = '/signin';
+      navigate('/signin');
       return Promise.reject(error);
     }
 
     // 로그인상태일 경우 Access Token 재발급 로직 실행해야함
-    // 401 Unauthrized 체크 & originalRequest로 재발급 시도의 무한루프 방지
+    // 401 Unauthorized일 때 originalRequest._retry 여부 체크로 재발급 시도의 무한루프 방지
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -68,7 +70,7 @@ apiClient.interceptors.response.use(
         // 리프레시 토큰이 유효하지 않거나 다른 문제가 발생하면 로그아웃 처리
         alert('인증이 만료되었습니다. 다시 로그인해 주세요.');
         console.error('리프레시 토큰 만료. 다시 로그인 필요', tokenRefreshError);
-        window.location.href = '/signin'; // 로그인 페이지로 리다이렉트
+        navigate('/signin');
         return Promise.reject(tokenRefreshError);
       }
     }
