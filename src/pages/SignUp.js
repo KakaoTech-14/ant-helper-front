@@ -4,6 +4,7 @@ import { Button, Form, Input, Inputs, StyledButton, Title, Wrapper } from '../co
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
+  const [token, setToken] = useState(null);
   const [code, setAuthCode] = useState('');
   const [pw, setPW] = useState('');
   const [pwCheck, setPWCheck] = useState('');
@@ -62,6 +63,7 @@ const SignUp = () => {
       if (response.data.isSuccess) {
         setAuthVerified(true);
         setErrorMessage('인증이 완료되었습니다.');
+        setToken(response.data.data.token);
       } else {
         setErrorMessage('인증번호가 일치하지 않습니다.');
       }
@@ -86,6 +88,7 @@ const SignUp = () => {
 
     try {
       const response = await apiClient.post('/api/members/signup', {
+        token: token,
         email: email,
         pw: pw,
         appKey: 'yourAppKey',
