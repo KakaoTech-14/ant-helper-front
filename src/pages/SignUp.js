@@ -32,7 +32,7 @@ const SignUp = () => {
   // 이메일 인증 요청(verification-request) API 처리
   const onClickSendCode = async () => {
     try {
-      const response = await apiClient.post('/api/members/email/verification-request', {
+      const response = await apiClient.post('/api/email/verification-request', {
         email: email,
       });
       if (response.data.isSuccess) {
@@ -54,7 +54,7 @@ const SignUp = () => {
   // 인증번호 확인(verification) API 처리
   const onClickVerifyCode = async () => {
     try {
-      const response = await apiClient.post('/api/members/email/verification', {
+      const response = await apiClient.post('/api/email/verification', {
         email,
         code,
       });
